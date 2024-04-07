@@ -1,13 +1,11 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
-import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 class BrandLineItem extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { statusState: true }
+        this.state = { statusState: props.item.isChecked }
         this.inputHandler = this.inputHandler.bind(this)
     }
 
@@ -16,6 +14,7 @@ class BrandLineItem extends React.Component {
         var newVal = !this.state.statusState
         this.setState({ statusState: newVal })
 
+        this.props.onSelect({ id: this.props.item.id, value: newVal });
     }
 
 

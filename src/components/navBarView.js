@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 
 class NavBarView extends React.Component {
 
-    pages = ["home", "suppliers", "brands", "products" ]
+    pages = ["home", "orders", "suppliers", "brands", "products"]
     constructor(props) {
         super(props)
         this.state = { selectIndex: 0 }
@@ -13,34 +13,43 @@ class NavBarView extends React.Component {
         this.onChangeSuppliers = this.onChangeSuppliers.bind(this)
         this.onChangeBrands = this.onChangeBrands.bind(this)
         this.onChangeProducts = this.onChangeProducts.bind(this)
+        this.onChangeOrders = this.onChangeOrders.bind(this)
         this.onChange = this.onChange.bind(this)
     }
 
 
-    onChange(index) {
+    onChange(key) {
+
+        var index = this.pages.indexOf(key)
+
         this.setState({ selectIndex: index })
 
-        
-        this.props.selectPage(this.pages[index]);
+
+        this.props.selectPage(key);
     }
 
     onChangeHome(e) {
         e.preventDefault();
-        this.onChange(0);
+        this.onChange("home");
     }
+    onChangeOrders(e) {
+        e.preventDefault();
+        this.onChange("orders");
+    }
+
     onChangeSuppliers(e) {
         e.preventDefault();
-        this.onChange(1);
+        this.onChange("suppliers");
 
     }
     onChangeBrands(e) {
         e.preventDefault();
-        this.onChange(2);
+        this.onChange("brands");
 
     }
     onChangeProducts(e) {
         e.preventDefault();
-        this.onChange(3);
+        this.onChange("products");
 
     }
 
@@ -52,9 +61,11 @@ class NavBarView extends React.Component {
                     <Navbar.Brand href="#home" onClick={this.onChangeHome} >Sandello</Navbar.Brand>
                     <Nav className="me-auto">
                         <Nav.Link href="#home" active={this.state.selectIndex == 0} onClick={this.onChangeHome} >Главная</Nav.Link>
-                        <Nav.Link href="#suppliers" active={this.state.selectIndex == 1} onClick={this.onChangeSuppliers}>Поставщики</Nav.Link>
-                        <Nav.Link href="#brands" active={this.state.selectIndex == 2} onClick={this.onChangeBrands}>Бренды</Nav.Link>
-                        <Nav.Link href="#products" active={this.state.selectIndex == 3} onClick={this.onChangeProducts} >Продукты</Nav.Link>
+                        <Nav.Link href="#orders" active={this.state.selectIndex == 1} onClick={this.onChangeOrders}>Заказы</Nav.Link>
+                        <Nav.Link href="#products" active={this.state.selectIndex == 4} onClick={this.onChangeProducts} >Продукты</Nav.Link>
+                        <Nav.Link href="#suppliers" active={this.state.selectIndex == 2} onClick={this.onChangeSuppliers}>Поставщики</Nav.Link>
+                        <Nav.Link href="#brands" active={this.state.selectIndex == 3} onClick={this.onChangeBrands}>Бренды</Nav.Link>
+                       
                     </Nav>
                 </Container>
             </Navbar>

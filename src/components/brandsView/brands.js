@@ -8,50 +8,116 @@ class Brands extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { brands: [
-            {id : 0, title: "test", isChecked : true , id_switch : "test_0" },
-            {id : 1, title: "test 1", isChecked : true , id_switch : "test_1" },
-            {id : 2, title: "test 2", isChecked : true , id_switch : "test_2" }
-        ] }
+        this.state = {
+            brands: [],
+            updated: {}
+        }
+
         this.clickSaveHandler = this.clickSaveHandler.bind(this)
+        this.clickUpdateElentHandler = this.clickUpdateElentHandler.bind(this)
+        this.renderButtonSave = this.renderButtonSave.bind(this)
 
-        // var self = this;
-        // axios.get('https://reqres.in/api/users?page=1')
-        //     .then(function (response) {
+        var self = this;
+        axios.get('/api/v1/brands', {offset : 0, limit : 1000})
+            .then(function (response) {
+                if (response.data.status != "ok") {
+                    throw response.error;
+                }
+                var arr = []
+                var brandsData = response.data.result.brands;
+                for (var i = 0; i < brandsData.length; i++) {
+                    var item = brandsData[i]
+                    var id_switch = "brandSwitchId_" + item.id
+                    arr.push(
+                        {
+                            id: item.id,
+                            title: item.name,
+                            isChecked: item.used,
+                            id_switch: id_switch
+                        }
+                    )
+                }
+                self.setState({ brands: arr });
 
-        //         var arr = []
-        //         var data = response.data.data;
-        //         for (var i = 0; i < data.length; i++) {
-        //             var item = data[i]
-        //             var isC = (item.id % 2) == 0
-        //             var id_switch = "flexSwitchCheckDefault_" + item.id
-        //             arr.push(
-        //                 {
-        //                     id: item.id,
-        //                     title: item.last_name,
-        //                     isChecked: isC,
-        //                     id_switch: id_switch
-        //                 }
-        //             )
-        //         }
-        //         self.setState({ brands: arr });
+            })
+            .catch(function (error) {
 
-        //     })
-        //     .catch(function (error) {
-
-        //         console.log(error)
-        //     });
+                console.log(error)
+            });
     }
 
     clickSaveHandler(e) {
         e.preventDefault();
-        console.log("sdsd")
+        
+        if ( Object.keys(this.state.updated).length == 0)
+            return
+        var self = this;
+        axios.post('/api/v1/brands/update', this.state.updated).then(function (response) {
+
+            var brands = this.state.brands;
+            var updated = this.state.updated
+
+            for (var index in brands) {
+
+                for (var upKey in updated) {
+
+                    if (upKey == brands[index].id) {
+                        brands[index].isChecked = updated[upKey]
+                        continue
+                    }
+                }
+            }
+
+            self.setState({ brands: brands, updated: {} })
+
+        }).catch(function (error) {
+
+            console.log(error)
+        });
+    }
+
+    clickUpdateElentHandler(data) {
+
+
+        var brands = this.state.brands;
+        var updated = this.state.updated
+
+        for (var index in brands) {
+
+            if (brands[index].id == data.id) {
+                if (brands[index].isChecked == data.value) {
+                    delete updated[data.id]
+                }
+                else {
+                    updated[data.id] = data.value;
+                }
+                break;
+            }
+
+        }
+
+        this.setState({ updated: updated })
+
+    }
+
+    componentDidUpdate(prevProps) {
+
     }
 
 
+    renderButtonSave() {
 
-    componentDidUpdate(prevProps) {
-        console.log(" Brands componentDidUpdate")
+        var count = Object.keys(this.state.updated).length
+
+        if (count == 0) {
+            return <div align="right" >
+                <Button variant="secondary">Сохранить</Button>{' '}
+            </div>
+        }
+
+        return <div align="right" >
+            <Button variant="primary" onClick={this.clickSaveHandler}>Сохранить</Button>{' '}
+        </div>
     }
 
     render() {
@@ -68,17 +134,16 @@ class Brands extends React.Component {
                 <tbody>
 
                     {this.state.brands.map((item, index) =>
-                        < BrandLineItem item={item} key={index}/>
+                        < BrandLineItem item={item} key={index} onSelect={this.clickUpdateElentHandler} />
                     )}
 
                 </tbody>
             </Table>
 
-            <div align="right" >
-                <Button variant="primary" onClick={this.clickSaveHandler}>Сохранить</Button>{' '}
-            </div>
+            {this.renderButtonSave()}
 
 
+            <br />
         </Container>)
     }
 }
