@@ -5,7 +5,7 @@ import Navbar from 'react-bootstrap/Navbar';
 
 class NavBarView extends React.Component {
 
-    pages = ["home", "orders", "suppliers", "brands", "products"]
+    pages = ["home", "orders", "suppliers", "brands", "products", "surcharges"]
     constructor(props) {
         super(props)
         this.state = { selectIndex: 0 }
@@ -15,6 +15,8 @@ class NavBarView extends React.Component {
         this.onChangeProducts = this.onChangeProducts.bind(this)
         this.onChangeOrders = this.onChangeOrders.bind(this)
         this.onChange = this.onChange.bind(this)
+        this.onChangeSurcharges = this.onChangeSurcharges.bind(this)
+        
     }
 
 
@@ -53,6 +55,11 @@ class NavBarView extends React.Component {
 
     }
 
+    onChangeSurcharges(e) {
+        e.preventDefault();
+        this.onChange("surcharges");
+    }
+
 
     render() {
         return (
@@ -65,7 +72,7 @@ class NavBarView extends React.Component {
                         <Nav.Link href="#products" active={this.state.selectIndex == 4} onClick={this.onChangeProducts} >Продукты</Nav.Link>
                         <Nav.Link href="#suppliers" active={this.state.selectIndex == 2} onClick={this.onChangeSuppliers}>Поставщики</Nav.Link>
                         <Nav.Link href="#brands" active={this.state.selectIndex == 3} onClick={this.onChangeBrands}>Бренды</Nav.Link>
-                       
+                        <Nav.Link href="#surcharges" active={this.state.selectIndex == 4} onClick={this.onChangeSurcharges}>Наценка</Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>

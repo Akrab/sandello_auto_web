@@ -18,7 +18,7 @@ class Brands extends React.Component {
         this.renderButtonSave = this.renderButtonSave.bind(this)
 
         var self = this;
-        axios.get('/api/v1/brands', {offset : 0, limit : 1000})
+        axios.get('/api/v1/brands', { offset: 0, limit: 1000 })
             .then(function (response) {
                 if (response.data.status != "ok") {
                     throw response.error;
@@ -48,8 +48,8 @@ class Brands extends React.Component {
 
     clickSaveHandler(e) {
         e.preventDefault();
-        
-        if ( Object.keys(this.state.updated).length == 0)
+
+        if (Object.keys(this.state.updated).length == 0)
             return
         var self = this;
         axios.post('/api/v1/brands/update', this.state.updated).then(function (response) {

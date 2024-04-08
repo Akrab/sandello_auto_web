@@ -4,8 +4,7 @@ import SupplierLineItem from './supplierLineItem';
 import Container from 'react-bootstrap/Container';
 import Table from 'react-bootstrap/Table';
 import axios from "axios";
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+
 
 import ModalOkView from '../modalOkView';
 
@@ -15,16 +14,44 @@ class Suppliers extends React.Component {
         super(props)
         this.state = {
             isShowModel: false,
-            suppliers: [
-                { id: 0, title: "test", email: "asddas@mail.ru", description: " sdfs sdf ssdf asdff asdf asdf assdf asdf asdf assdf asdf asd fasdf sd ff", id_switch: "test_1" },
-                { id: 1, title: "test 1", email: "asddas@mail.ru", description: "t", id_switch: "test_2" },
-                { id: 2, title: "test 2", email: "asddas@mail.ru", description: "t", id_switch: "test_3" },
-            ]
+            suppliers: []
         }
         this.onEdit = this.onEdit.bind(this)
         this.onDelete = this.onDelete.bind(this)
         this.checkModal = this.checkModal.bind(this)
         //   this.clickSaveHandler = this.clickSaveHandler.bind(this)
+
+        var self = this;
+        axios.get('/api/v1/suppliers', {offset : 0, limit : 1000})
+            .then(function (response) {
+
+                if (response.data.status != "ok") {
+                    throw response.error;
+                }
+                var arr = []
+                var suppliersData = response.data.result.suppliers;
+                for (var i = 0; i < suppliersData.length; i++) {
+                    var item = suppliersData[i]
+                    var id_switch = "supplierSwitchId_" + item.id
+                    arr.push(
+                        {
+                            id: item.id,
+                            name_supplier: item.name_supplier,
+                            email: item.email,
+                            description : item.description,
+                            enable : item.enable,
+                            parse_struct : item.parse_struct,
+                            id_switch: id_switch
+                        }
+                    )
+                }
+                self.setState({ suppliers: arr });
+
+            })
+            .catch(function (error) {
+
+                console.log(error)
+            });
     }
 
     onEdit(e) {

@@ -30,8 +30,6 @@ class BrandLineItem extends React.Component {
                         onInput={this.inputHandler}
                         value={this.state.statusState}
                         checked={this.state.statusState}
-                    //onChange={this.inputHandler}
-
                     />
                 </Form>
             </td>

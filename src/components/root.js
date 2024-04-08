@@ -3,6 +3,8 @@ import Container from 'react-bootstrap/Container';
 
 import Brands from './brandsView/brands';
 import Suppliers from './suppliersView/suppliers';
+import Surcharges from './surchargesView/surcharges';
+
 class RootView extends React.Component {
 
     constructor(props) {
@@ -23,7 +25,9 @@ class RootView extends React.Component {
                 case "brands":
                     return <Brands />
                 case "suppliers":
-                    return <Suppliers/>
+                    return <Suppliers />
+                case "surcharges":
+                    return <Surcharges />
                 case "brands":
                 case "products":
 
