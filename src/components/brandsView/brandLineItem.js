@@ -5,14 +5,14 @@ class BrandLineItem extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { statusState: props.item.isChecked }
+        this.state = { enable: props.item.enable }
         this.inputHandler = this.inputHandler.bind(this)
     }
 
     inputHandler(e) {
         e.preventDefault();
-        var newVal = !this.state.statusState
-        this.setState({ statusState: newVal })
+        var newVal = !this.state.enable
+        this.setState({ enable: newVal })
 
         this.props.onSelect({ id: this.props.item.id, value: newVal });
     }
@@ -28,8 +28,8 @@ class BrandLineItem extends React.Component {
                         type="switch"
                         id={this.props.item.id_switch}
                         onInput={this.inputHandler}
-                        value={this.state.statusState}
-                        checked={this.state.statusState}
+                        value={this.state.enable}
+                        checked={this.state.enable}
                     />
                 </Form>
             </td>

@@ -19,7 +19,7 @@ class SupplierLineItem extends React.Component {
         var newVal = !this.state.enable
         this.setState({ enable: newVal })
 
-       // this.props.onSelect({ id: this.props.item.id, value: newVal });
+        this.props.onSelect({ id: this.props.item.id, value: newVal });
     }
 
     onClickEdit() {
@@ -47,8 +47,8 @@ class SupplierLineItem extends React.Component {
                     />
                 </Form>
             </td>
-            <td> <Button variant="primary" onClick={this.onClickEdit} >Редактировать</Button>{' '}
-                <Button variant="danger" onClick={this.onClickDelete}>Удалить</Button>{' '}</td>
+            <td> <Button variant="secondary" onClick={this.onClickEdit} >Редактировать</Button>{' '}
+                <Button variant="secondary" onClick={this.onClickDelete}>Удалить</Button>{' '}</td>
 
         </tr>)
     }

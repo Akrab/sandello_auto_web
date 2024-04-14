@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import NavBarView from './components/navBarView';
 import RootView from './components/root';
-import Container from 'react-bootstrap/Container';
 
 class App extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = { currentPage: 0 }
+        var page =  props.pathname.slice(1, props.pathname.length) 
+        this.state = { currentPage:  page }
         this.selectPage = this.selectPage.bind(this)
     }
 
@@ -20,7 +20,7 @@ class App extends React.Component {
         return (
 
             <div>
-                <NavBarView selectPage={this.selectPage} />
+                <NavBarView currentPage = {this.state.currentPage} selectPage={this.selectPage} />
                 <RootView currentPage={this.state.currentPage} />
 
             </div>
@@ -30,5 +30,5 @@ class App extends React.Component {
 }
 
 const navbarNavAltMarkup = ReactDOM.createRoot(document.getElementById('root'));
-navbarNavAltMarkup.render(<App />)
+navbarNavAltMarkup.render(<App pathname={window.location.pathname} />)
 

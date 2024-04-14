@@ -4,6 +4,7 @@ import Table from 'react-bootstrap/Table';
 import BrandLineItem from './brandLineItem'
 import axios from "axios";
 import Button from 'react-bootstrap/Button';
+
 class Brands extends React.Component {
 
     constructor(props) {
@@ -32,7 +33,7 @@ class Brands extends React.Component {
                         {
                             id: item.id,
                             title: item.name,
-                            isChecked: item.used,
+                            enable: item.used,
                             id_switch: id_switch
                         }
                     )
@@ -52,23 +53,34 @@ class Brands extends React.Component {
         if (Object.keys(this.state.updated).length == 0)
             return
         var self = this;
+
         axios.post('/api/v1/brands/update', this.state.updated).then(function (response) {
 
-            var brands = this.state.brands;
-            var updated = this.state.updated
+            if (response.data.status != "ok") {
+                throw response.error;
+            }
 
-            for (var index in brands) {
+            var new_data = response.data.result.new_data;
 
-                for (var upKey in updated) {
+            var brands = self.state.brands;
+            var updated = self.state.updated
 
-                    if (upKey == brands[index].id) {
-                        brands[index].isChecked = updated[upKey]
-                        continue
+
+            for (var key in new_data) {
+                for (var index in brands) {
+
+                    if (brands[index].id == key) {
+                        brands[index].enable = new_data[key]
                     }
+                }
+
+                if (updated[key] != null) {
+                    delete updated[key]
                 }
             }
 
-            self.setState({ brands: brands, updated: {} })
+
+            self.setState({ brands: brands, updated: updated })
 
         }).catch(function (error) {
 
@@ -78,14 +90,13 @@ class Brands extends React.Component {
 
     clickUpdateElentHandler(data) {
 
-
         var brands = this.state.brands;
         var updated = this.state.updated
 
         for (var index in brands) {
 
             if (brands[index].id == data.id) {
-                if (brands[index].isChecked == data.value) {
+                if (brands[index].enable == data.value) {
                     delete updated[data.id]
                 }
                 else {
@@ -99,11 +110,6 @@ class Brands extends React.Component {
         this.setState({ updated: updated })
 
     }
-
-    componentDidUpdate(prevProps) {
-
-    }
-
 
     renderButtonSave() {
 
