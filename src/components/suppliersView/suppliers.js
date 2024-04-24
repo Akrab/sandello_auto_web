@@ -131,7 +131,7 @@ class Suppliers extends React.Component {
     }
 }
 
-export default Suppliers
+
 
 
 

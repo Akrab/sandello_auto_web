@@ -165,5 +165,3 @@ class Surcharges extends React.Component {
         </Container>)
     }
 }
-
-export default Surcharges
