@@ -1,8 +1,8 @@
 
-import React, { useState } from "react";
-import { SelectPageProvider } from "../../providers/SelectPageProvider";
+import React from "react";
 
 export default function Suppliers() {
-    return (<>Suppliers</>
-       )
-}
+    return <div className="suppliers-page">
+        <h1 className="text-center">Поставщики</h1>
+    </div>
+};

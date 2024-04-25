@@ -12,7 +12,7 @@ export default function PagesView() {
 
     const [page, setPage] = useContext(SelectPageContext);
 
-    if (page === "home") return <div >{<Main/>}</div>
+    if (page === "home") return <Main />
     if (page === "brands") return <Brands />
     if (page === "suppliers") return <Suppliers />
     if (page === "surcharges") return <Surcharges />
