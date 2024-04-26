@@ -10,6 +10,7 @@ export default function HistoryImportPrice() {
     </div>
 
     if (loadingStatus === "ERROR") return <div className="historyImportPrice-page">
+        <br></br>
         <Alert key='danger' variant='danger'>
             Упс! Что-то пошло не так, перезагрузите страницу
         </Alert>

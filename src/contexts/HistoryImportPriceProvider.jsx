@@ -9,7 +9,7 @@ export const HistoryImportPriceProvider = ({ children }) => {
 
     async function load() {
         setLoadingStatus("LOADING");
-
+       // console.log("LOADING 111");
         const res = await GetHistoryPriceParse(30, 0);
         if (!res || res.status === "error") return setLoadingStatus("ERROR");
 
@@ -17,7 +17,7 @@ export const HistoryImportPriceProvider = ({ children }) => {
         setLoadingStatus("SUCCESS");
     };
 
-    useEffect(() => { load() }, []);
+   // useEffect(() => { load() }, []);
 
     const value = {
         loadingStatus: loadingStatus,

@@ -13,7 +13,7 @@ async function sendRequest(method, params) {
         data.status = data.status || "error";
         return data;
     } catch (err) {
-        console.error(err);
+        console.log(err);
         return { status: "error", code: -2, message: "network error" };
     };
 };

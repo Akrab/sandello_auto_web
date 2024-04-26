@@ -10,7 +10,9 @@ import Surcharges from "./pages/Surcharges";
 import HistoryImportPrice from "./pages/HistoryImportPrice";
 import NotFound from "./pages/NotFound";
 import Container from 'react-bootstrap/Container';
-
+import { HistoryImportPriceProvider } from "./contexts/HistoryImportPriceProvider";
+import { BrandImportProvider } from "./contexts/BrandImportProvider";
+import { SuppliersProvider } from "./contexts/SuppliersProvider";
 let element = document.getElementById("root");
 
 if (!element) {
@@ -18,22 +20,41 @@ if (!element) {
     element.id = "root";
 };
 
+function BasicProviders({ children }) {
+    return <>
+        <HistoryImportPriceProvider>
+            <BrandImportProvider>
+                <SuppliersProvider>
+                    {children}
+                </SuppliersProvider>
+            </BrandImportProvider>
+
+        </HistoryImportPriceProvider>
+    </>
+};
+
 const root = createRoot(element);
+
 root.render(<>
-    <BrowserRouter>
-        <Header />
-        <Container>
-            <Routes>
-                <Route path="/" element={<Main />} />
-                <Route path="/orders" element={<Orders />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/brands" element={<Brands />} />
-                <Route path="/suppliers" element={<Suppliers />} />
-                <Route path="/surcharges" element={<Surcharges />} />
-                <Route path="/historyImportPrice" element={<HistoryImportPrice />} />
-                <Route path="/*" element={<NotFound />} />
-            </Routes>
-        </Container>
-    </BrowserRouter>
+
+    <BasicProviders>
+        <BrowserRouter>
+            <Header />
+            <Container>
+                <Routes>
+                    <Route path="/" element={<Main />} />
+                    <Route path="/orders" element={<Orders />} />
+                    <Route path="/products" element={<Products />} />
+                    <Route path="/brands" element={<Brands />} />
+                    <Route path="/suppliers" element={<Suppliers />} />
+                    <Route path="/surcharges" element={<Surcharges />} />
+                    <Route path="/historyImportPrice" element={
+                        <HistoryImportPrice />} />
+                    <Route path="/*" element={<NotFound />} />
+                </Routes>
+            </Container>
+        </BrowserRouter>
+
+    </BasicProviders>
 </>)
 
