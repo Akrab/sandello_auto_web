@@ -18,7 +18,9 @@ async function sendRequest(method, params) {
     };
 };
 
+
 export const sendGet = async (params) => await sendRequest("GET", params);
 export const sendPatch = async (params) => await sendRequest("PATCH", params);
 export const sendPost = async (params) => await sendRequest("POST", params);
+export const sendPut = async (params) => await sendRequest("PUT", params);
 export const sendDelete = async (params) => await sendRequest("DELETE", params);

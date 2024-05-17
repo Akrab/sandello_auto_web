@@ -11,20 +11,38 @@ export const SuppliersProvider = ({ children }) => {
     async function load() {
 
 
-        setLoadingStatus("SUCCESS")
+        // setLoadingStatus("SUCCESS")
    
-        var suppliers = [{ id: 1, name_supplier: "weqw", email: "wedf", description : "", enable: false },
-        { id: 2, name_supplier: "222", email: "wesdcvdf", description : "", enable: false },
-        { id: 3, name_supplier: "333", email: "wesadfsfsdfdf", description : "", enable: false }];
-        setSuppliers(suppliers);
+        // var suppliers = [{ id: 1, name_supplier: "weqw", email: "wedf", description : "", enable: false },
+        // { id: 2, name_supplier: "222", email: "wesdcvdf", description : "", enable: false },
+        // { id: 3, name_supplier: "333", email: "wesadfsfsdfdf", description : "", enable: false }];
+        // setSuppliers(suppliers);
 
-        // setLoadingStatus("LOADING");
-        // const res = await GetSuppliers(100, 0);
-        // if (!res || res.status === "error") return setLoadingStatus("ERROR");
+        setLoadingStatus("LOADING");
+        const res = await GetSuppliers(100, 0);
+        if (!res || res.status === "error") return setLoadingStatus("ERROR");
 
-        // setSuppliers(res.result.suppliers || res.result);
-        // setLoadingStatus("SUCCESS");
+        setSuppliers(res.result.suppliers || res.result);
+        setLoadingStatus("SUCCESS");
     };
+
+    async function update(data) {
+        setUpdateStatus("SEND");
+        const res = await UpdateSupplier(data);
+        if (!res || res.status === "error") return setUpdateStatus("ERROR");
+
+
+        var s = suppliers;
+
+        for (var i = 0; i < s.length; i++){
+            var id = s[i].id;
+            if(data[id] != null) {
+                s[i].enable = data[id];
+            }
+        }
+        setSuppliers(s);
+        setUpdateStatus("SUCCESS");
+    }
 
 
     const value = {
@@ -32,7 +50,8 @@ export const SuppliersProvider = ({ children }) => {
         suppliers,
         load,
         updateStatus,
-        setUpdateStatus
+        setUpdateStatus,
+        update
 
     };
 

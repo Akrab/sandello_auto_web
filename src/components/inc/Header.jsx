@@ -3,7 +3,9 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavLink from "../NavLink";
+
 import { useNavigate } from 'react-router-dom/dist';
+import HeaderOnOffSystem from './HeaderOnOffSystem';
 
 export default function Header() {
     const navigate = useNavigate();
@@ -19,6 +21,8 @@ export default function Header() {
                 <NavLink url="surcharges" id="surcharges">Наценка</NavLink>
                 <NavLink url="historyImportPrice" id="historyImportPrice">История импорта</NavLink>
             </Nav>
+            {/* <HeaderOnOffSystem/> */}
+
         </Container>
     </Navbar>
 

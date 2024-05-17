@@ -13,6 +13,7 @@ import Container from 'react-bootstrap/Container';
 import { HistoryImportPriceProvider } from "./contexts/HistoryImportPriceProvider";
 import { BrandImportProvider } from "./contexts/BrandImportProvider";
 import { SuppliersProvider } from "./contexts/SuppliersProvider";
+import { SurchargesProvider } from "./contexts/SurchargesProvider";
 let element = document.getElementById("root");
 
 if (!element) {
@@ -25,7 +26,9 @@ function BasicProviders({ children }) {
         <HistoryImportPriceProvider>
             <BrandImportProvider>
                 <SuppliersProvider>
-                    {children}
+                    <SurchargesProvider>
+                        {children}
+                    </SurchargesProvider>
                 </SuppliersProvider>
             </BrandImportProvider>
 

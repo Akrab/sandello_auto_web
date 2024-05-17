@@ -10,12 +10,115 @@ export default function Suppliers() {
         suppliers,
         load,
         updateStatus,
-        setUpdateStatus } = useSuppliersProvider();
+        setUpdateStatus,
+        update } = useSuppliersProvider();
 
 
+    const [updated, setUpdated] = useState({});
     useEffect(() => { load() }, []);
 
 
+    
+    const onUpdate = (obj) => {
+
+        updated[obj.id] = { enable: obj.enable, old: obj.old }
+
+        setUpdated(prev => {
+            return {
+                ...prev,
+                updated
+            }
+        });
+    }
+
+    const drawSuppliers = () => {
+
+        return (<>
+            {suppliers.map(supplier => {
+                return <SuppliersLine supplier={supplier} key={supplier.id} onUpdate= {onUpdate} />
+            })}
+        </>)
+    }
+
+
+    const sendClick = (e) => {
+        var sendObj = {};
+        for (var key in updated) {
+            if (updated[key].enable != undefined && updated[key].enable != updated[key].old)
+                sendObj[key] = updated[key].enable;
+        }
+
+        var count = Object.keys(sendObj).length;
+     
+        if (count == 0) return;
+
+        
+        update(sendObj);
+        setUpdated({})
+
+    
+    }
+
+    const renderButtonSave = () => {
+
+        if (updateStatus === "SEND") {
+            return (<div align="right" > <Button variant="primary" disabled>
+                <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                />Обновление</Button> </div>)
+        }
+
+        if (updateStatus !== "NONE") return;
+
+        var dirty = false
+        for (var key in updated) {
+            if (updated[key].enable != updated[key].old) dirty = true;
+        }
+
+        if (!dirty) {
+            return (<div align="right" >
+                <Button variant="secondary" >Сохранить</Button>{' '}
+            </div>)
+        }
+
+        return (<div align="right" >
+            <Button variant="primary" onClick={sendClick} >Сохранить</Button>{' '}
+        </div>)
+    }
+
+
+    const renderSuccess = () => {
+        // 
+        if (updateStatus === "SUCCESS") { 
+
+            return (<Alert variant="success" onClose = {()=>setUpdateStatus("NONE")} dismissible>
+                <Alert.Heading>Обновлено</Alert.Heading>
+                <p>
+                    Данные обновлены.
+                </p>
+            </Alert>)
+        }
+
+    }
+
+    
+    const renderAlertUpdate = () => {
+        // 
+        if (updateStatus === "ERROR") {
+
+            return (<Alert variant="danger" onClose = {()=>setUpdateStatus("NONE")} dismissible>
+                <Alert.Heading>Ошибка обновления</Alert.Heading>
+                <p>
+                    Что-то пошло не так.
+                </p>
+            </Alert>)
+        }
+
+    }
 
     if (loadingStatus === "LOADING") return <div className="suppliers-page">
         <br></br>
@@ -23,15 +126,6 @@ export default function Suppliers() {
         <Spinner animation="border" variant="info" />
     </div>
 
-
-    const drawSuppliers = () => {
-
-        return (<>
-            {suppliers.map(supplier => {
-                return <SuppliersLine supplier={supplier} key={supplier.id} />
-            })}
-        </>)
-    }
 
 
     if (loadingStatus === "SUCCESS") return (<div className="suppliers-page">
@@ -52,6 +146,9 @@ export default function Suppliers() {
                 </tbody>
             </Table>
             <br />
+            {renderButtonSave()}
+            {renderSuccess()}
+            {renderAlertUpdate()}
             <br />
 
         </Container>

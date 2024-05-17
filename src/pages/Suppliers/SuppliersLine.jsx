@@ -1,27 +1,25 @@
-import { Form, Button } from "react-bootstrap"
+import { Form, Button, Spinner } from "react-bootstrap"
 import { useState } from "react";
 
 
 export default function SuppliersLine({ supplier, onUpdate, children }) {
 
-    const [enable, setEnable] = useState(supplier.updated == undefined ? supplier.used : supplier.updated);
-
-    function OnInput(e) {
-        setEnable(!enable);
-        // onUpdate({ id: item.id, used: !enable, old: item.used });
-    }
+    const [enable, setEnable] = useState(supplier.updated == undefined ? supplier.enable : supplier.updated);
 
 
     function inputHandler(e) {
-
+        setEnable(!enable);
+        onUpdate({ id: supplier.id, enable: !enable, old: supplier.enable });
     }
 
     function onClickEdit(e) {
 
     }
+
     function onClickDelete(e) {
 
     }
+
     return (<tr>
         <td>{supplier.id}</td>
         <td>{supplier.name_supplier}</td>
@@ -43,4 +41,3 @@ export default function SuppliersLine({ supplier, onUpdate, children }) {
 
     </tr>)
 }
-
