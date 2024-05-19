@@ -1,7 +1,7 @@
 import { sendGet, sendDelete } from "../basic";
 
 export async function GetHistoryPriceParse(limit, offset) {
-    return await sendGet({ url: '/api/v1/historyPriceParse', body: { limit: limit, offset: offset } });
+    return await sendGet({ url: '/api/v1/historyPriceParse', header: { limit: limit, offset: offset } });
 };
 
 export async function DeleteHistoryPriceParse(id) {

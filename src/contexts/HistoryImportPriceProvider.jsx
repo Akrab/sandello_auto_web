@@ -12,22 +12,30 @@ export const HistoryImportPriceProvider = ({ children }) => {
     const [showModal, setShowModal] = useState(false);
     const [selectSlot, setSelectSlot] = useState(null);
 
+    const COUNT_IN_PAGE = 10;
+
+    function calculateMaxPages(count) {
+        setMaxPages(Math.ceil(count / COUNT_IN_PAGE));
+    }
+
 
     async function load(limit, offset) {
 
-        setHistory([{ id: 0, uid: 100, supplierName: "2odolsk_RUB", fileName: "2024_03_19_export_Podolsk_RUB_RS62334", created: 1715911880000, updated: 1715911880000, status: 3 },
-        { id: 1, uid: 110, supplierName: "Gig1", fileName: "2024_03_19_export_Podolsk_RUB_RS62334", created: 1715911880000, updated: 1715911880000, status: 5 },
-        { id: 2, uid: 120, supplierName: "Gig2", fileName: "2024_03_19_export_Podolsk_RUB_RS62334", created: 1715911880000, updated: 1715911880000, status: 4 }])
+        // setHistory([{ id: 0, uid: 100, supplierName: "2odolsk_RUB", fileName: "2024_03_19_export_Podolsk_RUB_RS62334", created: 1715911880000, updated: 1715911880000, status: 3 },
+        // { id: 1, uid: 110, supplierName: "Gig1", fileName: "2024_03_19_export_Podolsk_RUB_RS62334", created: 1715911880000, updated: 1715911880000, status: 5 },
+        // { id: 2, uid: 120, supplierName: "Gig2", fileName: "2024_03_19_export_Podolsk_RUB_RS62334", created: 1715911880000, updated: 1715911880000, status: 4 }])
+
+        // calculateMaxPages(3);
+        // setLoadingStatus("SUCCESS");
+
+        setLoadingStatus("LOADING");
+        const res = await GetHistoryPriceParse(limit, offset);
+        if (!res || res.status === "error") return setLoadingStatus("ERROR");
+
+        setHistory(res.result.history || res.result);
+        calculateMaxPages(res.result.count);
         setLoadingStatus("SUCCESS");
 
-        //     setLoadingStatus("LOADING");
-        //     const res = await GetHistoryPriceParse(limit, offset);
-        //     if (!res || res.status === "error") return setLoadingStatus("ERROR");
-
-        //     setHistory(res.result.history || res.result);
-        //     setMaxPages(res.result.pages);
-        //     setLoadingStatus("SUCCESS");
-        // };
     };
 
     async function deleteItem(id) {
@@ -36,19 +44,30 @@ export const HistoryImportPriceProvider = ({ children }) => {
         const resDel = await DeleteHistoryPriceParse(id)
         if (!resDel || resDel.status === "error") return setUpdateStatus("ERROR");
 
-        const res = await GetHistoryPriceParse(10, currentPage * 10);
+        const res = await GetHistoryPriceParse(COUNT_IN_PAGE, currentPage * COUNT_IN_PAGE);
         if (!res || res.status === "error") return setLoadingStatus("ERROR");
 
         setHistory(res.result.history || res.result);
-        setMaxPages(res.result.pages);
+        calculateMaxPages(res.result.count);
         setLoadingStatus("SUCCESS");
-
     };
 
+    async function loadPage(page) {
+        setUpdateStatus("SEND");
+        const res = await GetHistoryPriceParse(COUNT_IN_PAGE, page * COUNT_IN_PAGE);
+        if (!res || res.status === "error") return setLoadingStatus("ERROR");
+
+        setHistory(res.result.history || res.result);
+        calculateMaxPages(res.result.count);
+        setCurrentPage(page > maxPages ? maxPages : page)
+        setLoadingStatus("SUCCESS");
+    }
+
     useEffect(() => {
+        setHistory([])
         setCurrentPage(0);
         setMaxPages(1);
-        load(10, currentPage * 10)
+        load(COUNT_IN_PAGE, currentPage * COUNT_IN_PAGE)
     }, []);
 
     const value = {
@@ -64,7 +83,8 @@ export const HistoryImportPriceProvider = ({ children }) => {
         setSelectSlot,
         deleteItem,
         updateStatus,
-        setUpdateStatus
+        setUpdateStatus,
+        loadPage
     };
 
     return (<HistoryImportPriceContext.Provider value={value} >{children}</HistoryImportPriceContext.Provider>)

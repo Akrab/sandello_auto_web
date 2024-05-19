@@ -76,9 +76,9 @@ export default function HistoryImportPrice() {
                 </tbody>
             </Table>
             <br />
+            <PaginatorHistory/>
             {renderSuccess()}
             {renderAlertUpdate()}
-            <PaginatorHistory/>
             <br />
             <DeleteConfirmModal onDelete={onDelete}  />
         </Container>

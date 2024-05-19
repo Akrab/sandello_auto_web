@@ -1,7 +1,7 @@
 async function sendRequest(method, params) {
     try {
         let url = params.url;
-        let body = method === "GET" ? null : params.body;
+        let body = (method === "GET" || method === "HEAD") ? null : params.body;
         params.headers = params.header || {};
 
         let response = await fetch(url, {
