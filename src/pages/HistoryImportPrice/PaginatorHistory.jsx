@@ -31,7 +31,6 @@ export default function PaginatorHistory({ childrens }) {
         }
     }
 
-
     return (
 
         <>

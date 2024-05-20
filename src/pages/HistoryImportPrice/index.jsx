@@ -1,4 +1,4 @@
-import React from "react";
+import  { useEffect, React} from "react";
 import { useHistoryImportPriceProvider } from "../../contexts/HistoryImportPriceProvider";
 import { Alert, Spinner, Table, Container } from "react-bootstrap";
 import HistoryLine from "./HistoryLine";
@@ -6,8 +6,9 @@ import DeleteConfirmModal from "./DeleteConfirmModal";
 import PaginatorHistory from "./PaginatorHistory";
 
 export default function HistoryImportPrice() {
-    const { loadingStatus, history, updateStatus, setUpdateStatus, selectSlot, setSelectSlot, deleteItem } = useHistoryImportPriceProvider();
+    const { loadingStatus, history, updateStatus, setUpdateStatus, selectSlot, setSelectSlot, deleteItem, openPageInWEb } = useHistoryImportPriceProvider();
 
+    useEffect(() => { openPageInWEb() }, []);
 
     const onDelete = () => {
         deleteItem(selectSlot.id);
@@ -76,11 +77,11 @@ export default function HistoryImportPrice() {
                 </tbody>
             </Table>
             <br />
-            <PaginatorHistory/>
+            <PaginatorHistory />
             {renderSuccess()}
             {renderAlertUpdate()}
             <br />
-            <DeleteConfirmModal onDelete={onDelete}  />
+            <DeleteConfirmModal onDelete={onDelete} />
         </Container>
 
 

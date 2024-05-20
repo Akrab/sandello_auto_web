@@ -1,3 +1,22 @@
+import axios from "axios";
+
+
+async function sendAxiosGetRequset(params) {
+    try {
+        let header = params.header || {};
+
+
+        const response = await axios.get(params.url, { params: header })
+
+        let data = await response.data;
+        data.status = data.status || "error";
+        return data;
+    } catch (err) {
+        console.log(err);
+        return { status: "error", code: -2, message: "network error" };
+    };
+}
+
 async function sendRequest(method, params) {
     try {
         let url = params.url;
@@ -19,7 +38,7 @@ async function sendRequest(method, params) {
 };
 
 
-export const sendGet = async (params) => await sendRequest("GET", params);
+export const sendGet = async (params) => sendRequest("GET", params);
 export const sendPatch = async (params) => await sendRequest("PATCH", params);
 export const sendPost = async (params) => await sendRequest("POST", params);
 export const sendPut = async (params) => await sendRequest("PUT", params);

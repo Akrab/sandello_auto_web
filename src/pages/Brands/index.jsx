@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useBrandImportProvider } from "../../contexts/BrandImportProvider";
 import { Alert, Spinner, Container, Table, Button } from "react-bootstrap";
-import AlertView from "../../components/AlertView";
+
 import BrandLine from "./BrandLine";
 
 export default function Brands() {

@@ -63,12 +63,13 @@ export const HistoryImportPriceProvider = ({ children }) => {
         setLoadingStatus("SUCCESS");
     }
 
-    useEffect(() => {
+
+    async function openPageInWEb() {
         setHistory([])
         setCurrentPage(0);
         setMaxPages(1);
         load(COUNT_IN_PAGE, currentPage * COUNT_IN_PAGE)
-    }, []);
+    }
 
     const value = {
         loadingStatus,
@@ -84,7 +85,8 @@ export const HistoryImportPriceProvider = ({ children }) => {
         deleteItem,
         updateStatus,
         setUpdateStatus,
-        loadPage
+        loadPage,
+        openPageInWEb
     };
 
     return (<HistoryImportPriceContext.Provider value={value} >{children}</HistoryImportPriceContext.Provider>)

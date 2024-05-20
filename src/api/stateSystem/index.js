@@ -1,5 +1,6 @@
 import { sendGet, sendPut } from "../basic";
 
+
 export async function GetEnableSystem() {
     return await sendGet({ url: '/api/v1/stateSystem'});
 };
