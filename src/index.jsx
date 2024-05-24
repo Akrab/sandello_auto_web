@@ -14,6 +14,8 @@ import { HistoryImportPriceProvider } from "./contexts/HistoryImportPriceProvide
 import { BrandImportProvider } from "./contexts/BrandImportProvider";
 import { SuppliersProvider } from "./contexts/SuppliersProvider";
 import { SurchargesProvider } from "./contexts/SurchargesProvider";
+import { OrdersProvider } from "./contexts/OrdersProvider";
+import { ProductsProvider } from "./contexts/ProductsProvider";
 let element = document.getElementById("root");
 
 if (!element) {
@@ -27,7 +29,11 @@ function BasicProviders({ children }) {
             <BrandImportProvider>
                 <SuppliersProvider>
                     <SurchargesProvider>
-                        {children}
+                        <OrdersProvider>
+                            <ProductsProvider>
+                                {children}
+                            </ProductsProvider>
+                        </OrdersProvider>
                     </SurchargesProvider>
                 </SuppliersProvider>
             </BrandImportProvider>

@@ -1,6 +1,6 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'react-bootstrap/Table';
@@ -14,7 +14,7 @@ export default function SurchargeModal({ onUpdate, children }) {
         editSurcharge
     } = useSurchargesProvider();
 
-    const [enable, setEnable] = useState(editSurcharge.updated == undefined ? editSurcharge.enable : editSurcharge.updated);
+    const [enable, setEnable] = useState(editSurcharge.updated === undefined ? editSurcharge.enable : editSurcharge.updated);
     const [to, setTo] = useState(editSurcharge.to);
     const [from, setFrom] = useState(editSurcharge.from);
     const [value, setValue] = useState(editSurcharge.value);
@@ -23,7 +23,7 @@ export default function SurchargeModal({ onUpdate, children }) {
     const handleClose = (e) => {
         setShowModal(false);
 
-        setEnable(editSurcharge.updated == undefined ? editSurcharge.enable : editSurcharge.updated)
+        setEnable(editSurcharge.updated === undefined ? editSurcharge.enable : editSurcharge.updated)
         setTo(editSurcharge.to);
         setFrom(editSurcharge.from);
         setValue(editSurcharge.value);

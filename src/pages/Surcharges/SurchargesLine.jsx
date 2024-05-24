@@ -1,6 +1,6 @@
-import { Form, Button, Spinner } from "react-bootstrap"
+import { Form, Button, } from "react-bootstrap"
 
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { useSurchargesProvider } from "../../contexts/SurchargesProvider";
 
 export default function SurchargesLine({ surcharge, onUpdate, children }) {
@@ -11,7 +11,7 @@ export default function SurchargesLine({ surcharge, onUpdate, children }) {
     } = useSurchargesProvider();
 
 
-    const [enable, setEnable] = useState(surcharge.updated == undefined ? surcharge.enable : surcharge.updated);
+    const [enable, setEnable] = useState(surcharge.updated === undefined ? surcharge.enable : surcharge.updated);
 
     function inputHandler(e) {
         setEnable(!enable);
