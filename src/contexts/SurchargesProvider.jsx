@@ -1,6 +1,6 @@
 
 import { GetSurcharges, UpdateSurcharges } from "../api/surcharges";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 
 export const SurchargesProviderContext = React.createContext({});
@@ -11,7 +11,7 @@ export const SurchargesProvider = ({ children }) => {
     const [updateStatus, setUpdateStatus] = useState("NONE");
 
     const [showModal, setShowModal] = useState(false);
-    const [editSurcharge, setEditSurcharge] = useState({});
+    const [editSurcharge, setEditSurcharge] = useState(null);
 
     async function load() {
 

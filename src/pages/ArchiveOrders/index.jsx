@@ -1,12 +1,11 @@
-import React from "react";
-import { Alert, Container, Table, Row, Col } from "react-bootstrap";
-import OrdersInPage from "./OrdersInPage";
-import OrderLine from "./OrderLine";
-import { useOrdersProvider } from "../../contexts/OrdersProvider";
-import { useEffect } from "react";
-import OrdersPaginator from "./OrdersPaginator";
 
-export default function Orders() {
+import { Alert } from "react-bootstrap"
+import { useArchiveOrdersProvider } from "../../contexts/ArchiveOrdersProvider";
+import { useEffect } from "react";
+import {Container, Table} from "react-bootstrap";
+import OrdersPaginator from "./OrdersPaginator";
+import OrderLine from "./OrderLine";
+export default function ArchiveOrders() {
 
     const {
         load,
@@ -14,27 +13,12 @@ export default function Orders() {
         maxPages,
         currentPage,
         loadingStatus,
-        updateStatus,
-        ordersInPage,
-        setOrdersInPage,
-        selectPage } = useOrdersProvider();
+        selectPage,
 
-    useEffect(() => { load(ordersInPage, 0) }, []);
+    } = useArchiveOrdersProvider();
 
-    const navigation = () => {
-        return (<>
-            <br />
-            <Row>
-                <Col>Маркетплейс</Col>
-                <Col>Магазин</Col>
-                <Col>Дата отгрузки </Col>
-                <Col>Статус</Col>
-                <Col>Поиск</Col>
-                <Col>Товаров на странице<OrdersInPage /> </Col>
-            </Row>
+    useEffect(() => { load(50, 0) }, []);
 
-            <br></br></>)
-    }
 
     const dateToStr = (unixTime) => {
 
@@ -44,17 +28,12 @@ export default function Orders() {
 
         var top = month + " " + ("0" + date.getDate()).slice(-2);
         var time = ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2)
-        // var datestring = ("0" + date.getDate()).slice(-2) + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" +
-        //     date.getFullYear() + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2);
-
-
+  
         return <><div align="center"> {top} <br /> {time} </div></>;
     }
 
-
     const drawOrders = () => {
         var items = [];
-
 
         for (var indexOrder = 0; indexOrder < orders.length; indexOrder++) {
 
@@ -73,7 +52,6 @@ export default function Orders() {
                     name: product.name,
                     sku: product.sku,
                     count: product.count,
-                    warehouseSellers: product.warehouse
                 });
             }
 
@@ -87,12 +65,11 @@ export default function Orders() {
         </>)
 
     }
-
-
-    if (loadingStatus === "SUCCESS") return (<main className="orders-page">
+    
+    if (loadingStatus === "SUCCESS") return (<main className="archive-orders-page">
 
         <Container>
-            {navigation()}
+            <br/>
             <Table responsive>
                 <thead>
                     <tr>
@@ -104,7 +81,6 @@ export default function Orders() {
                         <th align="center"> <p style={{ "text-align": "center" }}> Артикул</p></th>
                         <th align="center"> <p style={{ "text-align": "center" }}> Кол-во</p></th>
                         <th align="center"> <p style={{ "text-align": "center" }}> Цена за 1 шт.</p></th>
-                        <th align="left"> <p style={{ "text-align": "left" }}>Поставщики</p></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -122,11 +98,11 @@ export default function Orders() {
 
 
 
-
-    return <main className="orders-page">
+    return <div className="archive-orders-page">
         <br></br>
         <Alert key='danger' variant='danger' >
             Упс! Что-то пошло не так, перезагрузите страницу
         </Alert>
-    </main>
+    </div>
+
 }

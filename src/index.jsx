@@ -16,6 +16,9 @@ import { SuppliersProvider } from "./contexts/SuppliersProvider";
 import { SurchargesProvider } from "./contexts/SurchargesProvider";
 import { OrdersProvider } from "./contexts/OrdersProvider";
 import { ProductsProvider } from "./contexts/ProductsProvider";
+import { ArchiveOrdersProvider } from "./contexts/ArchiveOrdersProvider";
+import ArchiveOrders from "./pages/ArchiveOrders";
+
 let element = document.getElementById("root");
 
 if (!element) {
@@ -31,7 +34,9 @@ function BasicProviders({ children }) {
                     <SurchargesProvider>
                         <OrdersProvider>
                             <ProductsProvider>
-                                {children}
+                                <ArchiveOrdersProvider>
+                                    {children}
+                                </ArchiveOrdersProvider>
                             </ProductsProvider>
                         </OrdersProvider>
                     </SurchargesProvider>
@@ -53,6 +58,7 @@ root.render(<>
                 <Routes>
                     <Route path="/" element={<Main />} />
                     <Route path="/orders" element={<Orders />} />
+                    <Route path="/archive" element={<ArchiveOrders />} />
                     <Route path="/products" element={<Products />} />
                     <Route path="/brands" element={<Brands />} />
                     <Route path="/suppliers" element={<Suppliers />} />

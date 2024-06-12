@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Alert, Container, Table} from "react-bootstrap";
+import { Alert, Container, Table } from "react-bootstrap";
 import { useSurchargesProvider } from "../../contexts/SurchargesProvider";
 import SurchargesLine from "./SurchargesLine";
 import SurchargeModal from "./SurchargeModal";
@@ -13,14 +13,16 @@ export default function Surcharges() {
         updateStatus,
         setUpdateStatus,
         update,
-        setEditSurcharge } = useSurchargesProvider();
+        setEditSurcharge,
+        editSurcharge,
+    } = useSurchargesProvider();
 
     useEffect(() => { load() }, []);
 
     const onUpdate = (obj) => {
 
         update(obj);
-        setEditSurcharge({});
+        setEditSurcharge(null);
     }
 
 

@@ -7,13 +7,13 @@ function OrdersInPage() {
 
     const {
         ordersInPage,
-        setOrdersInPage } = useOrdersProvider();
+        selectOrdersInPage } = useOrdersProvider();
 
     const select = (e) => {
         switch (e.target.id) {
-            case "1": setOrdersInPage(10); break;
-            case "3": setOrdersInPage(50); break;
-            default: setOrdersInPage(30)
+            case "1": selectOrdersInPage(10); break;
+            case "3": selectOrdersInPage(50); break;
+            default: selectOrdersInPage(30)
         }
     }
 

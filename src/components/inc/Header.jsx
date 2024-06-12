@@ -5,7 +5,6 @@ import Navbar from 'react-bootstrap/Navbar';
 import NavLink from "../NavLink";
 
 import { useNavigate } from 'react-router-dom/dist';
-import HeaderOnOffSystem from './HeaderOnOffSystem';
 
 export default function Header() {
     const navigate = useNavigate();
@@ -15,6 +14,7 @@ export default function Header() {
             <Navbar.Brand href="" onClick={() => navigate("/")} id="home">Sandello</Navbar.Brand>
             <Nav className="me-auto">
                 <NavLink url="orders" id="orders">Заказы</NavLink>
+                <NavLink url="archive" id="archive">Архив</NavLink>
                 <NavLink url="products" id="products">Продукты</NavLink>
                 <NavLink url="suppliers" id="suppliers">Поставщики</NavLink>
                 <NavLink url="brands" id="brands">Бренды</NavLink>

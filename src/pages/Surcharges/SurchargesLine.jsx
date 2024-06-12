@@ -6,7 +6,6 @@ import { useSurchargesProvider } from "../../contexts/SurchargesProvider";
 export default function SurchargesLine({ surcharge, onUpdate, children }) {
 
     const {
-        setShowModal,
         setEditSurcharge
     } = useSurchargesProvider();
 
@@ -19,9 +18,7 @@ export default function SurchargesLine({ surcharge, onUpdate, children }) {
     }
 
     function onClickEdit(e) {
-
         setEditSurcharge(surcharge);
-        setShowModal(true)
     }
 
     function onClickDelete(e) {

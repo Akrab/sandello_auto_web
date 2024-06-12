@@ -5,33 +5,35 @@ import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Table from 'react-bootstrap/Table';
 import { useSurchargesProvider } from '../../contexts/SurchargesProvider';
+import { useEffect } from 'react';
 
-export default function SurchargeModal({ onUpdate, children }) {
+
+export default function SurchargeModal({onUpdate, children }) {
 
     const {
-        showModal,
-        setShowModal,
-        editSurcharge
+        editSurcharge,
+        setEditSurcharge,
     } = useSurchargesProvider();
 
-    const [enable, setEnable] = useState(editSurcharge.updated === undefined ? editSurcharge.enable : editSurcharge.updated);
-    const [to, setTo] = useState(editSurcharge.to);
-    const [from, setFrom] = useState(editSurcharge.from);
-    const [value, setValue] = useState(editSurcharge.value);
+    const [enable, setEnable] = useState(editSurcharge ==null ? false : editSurcharge.updated === undefined ? editSurcharge.enable : editSurcharge.updated);
+    const [to, setTo] = useState(editSurcharge == null ? 0: editSurcharge.to);
+    const [from, setFrom] = useState(editSurcharge == null ? 0: editSurcharge.from);
+    const [value, setValue] = useState(editSurcharge == null ? 0: editSurcharge.value);
 
 
     const handleClose = (e) => {
-        setShowModal(false);
 
         setEnable(editSurcharge.updated === undefined ? editSurcharge.enable : editSurcharge.updated)
         setTo(editSurcharge.to);
         setFrom(editSurcharge.from);
         setValue(editSurcharge.value);
+
+        setEditSurcharge(null)
     }
 
     const handleSave = (e) => {
         onUpdate({ id: editSurcharge.id, to, from, value, enable });
-        setShowModal(false);
+        setEditSurcharge(null)
     }
 
     const onInputTo = (e) => {
@@ -85,10 +87,19 @@ export default function SurchargeModal({ onUpdate, children }) {
         return v;
     }
 
+    const isShowModel =()=>{
+
+        return editSurcharge != null;
+    }
+
+    if (isShowModel() == false) {
+        return ;
+    }
 
     return (
+        
         <>
-            <Modal show={showModal} onHide={handleClose}>
+            <Modal show={isShowModel()} onHide={handleClose}>
                 <Modal.Header closeButton>
                     <Modal.Title>Редактирование №{editSurcharge.id}</Modal.Title>
                 </Modal.Header>
