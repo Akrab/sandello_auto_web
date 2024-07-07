@@ -6,6 +6,7 @@ import Brands from "./pages/Brands";
 import Suppliers from "./pages/Suppliers";
 import Orders from "./pages/Orders";
 import Products from "./pages/Products";
+import LocalWarehouse from "./pages/LocalWarehouse";
 import Surcharges from "./pages/Surcharges";
 import HistoryImportPrice from "./pages/HistoryImportPrice";
 import NotFound from "./pages/NotFound";
@@ -18,6 +19,12 @@ import { OrdersProvider } from "./contexts/OrdersProvider";
 import { ProductsProvider } from "./contexts/ProductsProvider";
 import { ArchiveOrdersProvider } from "./contexts/ArchiveOrdersProvider";
 import ArchiveOrders from "./pages/ArchiveOrders";
+import { LocalWarehousesProductsProvider } from "./contexts/LocalWarehousesProductsProvider";
+import LocalWarehousesProducts from "./pages/LocalWarehousesProducts";
+import { LocalWarehousesProvider } from "./contexts/LocalWarehousesProvider";
+import LocalWarehousesProductsAddProductPart from "./pages/LocalWarehousesProductsAddProductPart";
+import { SelectProductModalViewProvider } from "./contexts/SelectProductModalViewProvider";
+
 
 let element = document.getElementById("root");
 
@@ -28,22 +35,27 @@ if (!element) {
 
 function BasicProviders({ children }) {
     return <>
-        <HistoryImportPriceProvider>
-            <BrandImportProvider>
-                <SuppliersProvider>
-                    <SurchargesProvider>
-                        <OrdersProvider>
-                            <ProductsProvider>
-                                <ArchiveOrdersProvider>
-                                    {children}
-                                </ArchiveOrdersProvider>
-                            </ProductsProvider>
-                        </OrdersProvider>
-                    </SurchargesProvider>
-                </SuppliersProvider>
-            </BrandImportProvider>
-
-        </HistoryImportPriceProvider>
+        <SelectProductModalViewProvider>
+            <HistoryImportPriceProvider>
+                <BrandImportProvider>
+                    <SuppliersProvider>
+                        <SurchargesProvider>
+                            <OrdersProvider>
+                                <ProductsProvider>
+                                    <ArchiveOrdersProvider>
+                                        <LocalWarehousesProvider>
+                                            <LocalWarehousesProductsProvider>
+                                                {children}
+                                            </LocalWarehousesProductsProvider>
+                                        </LocalWarehousesProvider>
+                                    </ArchiveOrdersProvider>
+                                </ProductsProvider>
+                            </OrdersProvider>
+                        </SurchargesProvider>
+                    </SuppliersProvider>
+                </BrandImportProvider>
+            </HistoryImportPriceProvider>
+        </SelectProductModalViewProvider>
     </>
 };
 
@@ -63,6 +75,9 @@ root.render(<>
                     <Route path="/brands" element={<Brands />} />
                     <Route path="/suppliers" element={<Suppliers />} />
                     <Route path="/surcharges" element={<Surcharges />} />
+                    <Route path="/localwarehouses" element={<LocalWarehouse />} />
+                    <Route path="/localwarehousesProducts" element={<LocalWarehousesProducts />} />
+                    <Route path="/localwarehousesProducts/addProduct" element={<LocalWarehousesProductsAddProductPart />} />
                     <Route path="/historyImportPrice" element={
                         <HistoryImportPrice />} />
                     <Route path="/*" element={<NotFound />} />

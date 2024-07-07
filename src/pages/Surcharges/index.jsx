@@ -85,9 +85,6 @@ export default function Surcharges() {
                     </thead>
                     <tbody>
                         {drawSurcharges()}
-
-
-
                     </tbody>
                 </Table>
                 {renderSuccess()}
