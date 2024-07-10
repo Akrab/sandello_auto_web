@@ -6,12 +6,13 @@ import { useSelectProductModalViewProvider } from "../../contexts/SelectProductM
 
 export default function LocalWarehousesProductsAddProductPart() {
 
-    const {
-        setShowSelectProductModal
+    var {
     } = useSelectProductModalViewProvider();
 
+    const [showModal, setShowModal] = useState(false)
+    const [productValue, setProductValue] = useState("")
 
-    useEffect(() => { setShowSelectProductModal(false) }, []);
+    useEffect(() => { setShowModal(false) }, []);
 
     const drawBtnBack = () => {
         return (<>
@@ -25,9 +26,12 @@ export default function LocalWarehousesProductsAddProductPart() {
         </>)
     }
 
+    function selectItem (E){
+        setProductValue("[" +  E.sku + "] " + E.product_name);
+    }
 
     const clickSelectProduct = () => {
-        setShowSelectProductModal(true);
+        setShowModal(true);
     }
 
     const drawContentLeft = () => {
@@ -38,13 +42,12 @@ export default function LocalWarehousesProductsAddProductPart() {
                     <InputGroup className="mb-3">
 
                         <Form.Control
-                            placeholder="Recipient's username"
-                            aria-label="Recipient's username"
+                            placeholder="Выбраный продукт"
                             aria-describedby="basic-addon2"
                             readOnly
-                            value="test"
+                            value={productValue}
                         />
-                        <Button variant="outline-primary" id="button-addon2" onClick={(e)=>{clickSelectProduct()}} >
+                        <Button variant="outline-primary" id="button-addon2" onClick={(e) => { clickSelectProduct() }} >
                             Выбрать
                         </Button>
                     </InputGroup>
@@ -128,15 +131,16 @@ export default function LocalWarehousesProductsAddProductPart() {
     return (<>
         <div className="localwarehouses-add-product-page">
             <Container>
+                <SelectProductModalView showModal={showModal} setShowModal = {setShowModal} onSelect = {selectItem} />
                 {drawBtnBack()}
                 <br />
                 <br />
                 <Row>
                     <Col sm={8}>{drawContentLeft()}</Col>
-                    <Col sm={4}>  {drawContentRight()}  </Col>
+                    <Col sm={4}>{drawContentRight()}  </Col>
                 </Row>
 
-                <SelectProductModalView/>
+                <SelectProductModalView />
             </Container>
         </div>
     </>)

@@ -17,7 +17,7 @@ export default function LocalWarehouse() {
 
     const navigation = () => {
         return (<>
-            <td> <Button variant="primary">Создать склад</Button>{' '}</td>
+            <td> <Button href="/localwarehouses/create" variant="primary">Создать склад</Button>{' '}</td>
             <br></br></>)
     }
 

@@ -5,7 +5,6 @@ async function sendAxiosGetRequset(params) {
     try {
         let header = params.header || {};
 
-
         const response = await axios.get(params.url, { params: header })
 
         let data = await response.data;
@@ -19,12 +18,13 @@ async function sendAxiosGetRequset(params) {
 
 async function sendRequest(method, params) {
     try {
+
         let url = params.url;
         let body = (method === "GET" || method === "HEAD") ? null : params.body;
         params.headers = params.header || {};
 
         let response = await fetch(url, {
-            headers: params.headers,
+            headers: params.headers ,
             method: method,
             body: body ? JSON.stringify(body) : undefined
         });

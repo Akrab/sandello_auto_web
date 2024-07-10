@@ -2,7 +2,7 @@ import { Alert, Button, Container, Table, Form, InputGroup, Row, Col, Spinner } 
 import { useLocalWarehousesProductsProvider } from "../../contexts/LocalWarehousesProductsProvider"
 import { useEffect } from "react";
 import AddNewBoxView from "./AddNewBoxView";
-import AddProductView from "./AddProductView";
+
 import { Link } from "react-router-dom";
 export default function LocalWarehousesProducts() {
 
@@ -10,7 +10,7 @@ export default function LocalWarehousesProducts() {
         loadingStatus,
         load,
         products,
-        setNewBoxViewShow, setAddProductNewBoxViewShow
+        setNewBoxViewShow
     } = useLocalWarehousesProductsProvider();
 
     useEffect(() => { load() }, []);
@@ -109,7 +109,6 @@ export default function LocalWarehousesProducts() {
 
         </Container>
         <AddNewBoxView />
-        <AddProductView />
 
     </div>)
 

@@ -24,7 +24,7 @@ import LocalWarehousesProducts from "./pages/LocalWarehousesProducts";
 import { LocalWarehousesProvider } from "./contexts/LocalWarehousesProvider";
 import LocalWarehousesProductsAddProductPart from "./pages/LocalWarehousesProductsAddProductPart";
 import { SelectProductModalViewProvider } from "./contexts/SelectProductModalViewProvider";
-
+import CreateLocalWarehouse from "./pages/CreateLocalWarehouse";
 
 let element = document.getElementById("root");
 
@@ -78,6 +78,7 @@ root.render(<>
                     <Route path="/localwarehouses" element={<LocalWarehouse />} />
                     <Route path="/localwarehousesProducts" element={<LocalWarehousesProducts />} />
                     <Route path="/localwarehousesProducts/addProduct" element={<LocalWarehousesProductsAddProductPart />} />
+                    <Route path="/localwarehouses/create" element={<CreateLocalWarehouse/>}/>
                     <Route path="/historyImportPrice" element={
                         <HistoryImportPrice />} />
                     <Route path="/*" element={<NotFound />} />
