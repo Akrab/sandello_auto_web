@@ -2,8 +2,100 @@ import { Row, Spinner, Card, ListGroup, Col, InputGroup, Form, ToastContainer, T
 import { useState, useEffect } from "react";
 
 import styles from '../../style/main.css';
+import RoomsWarehouse from "./rooms.";
+import RacksWarehouse from "./racks";
+import BoxesWarehouse from "./boxes";
+import ShelvesWarehouse from "./shelves";
+
+import { useCreateLocalWarehouseProvider } from "../../contexts/CreateLocalWarehouseProvider";
 
 export default function CreateLocalWarehouse() {
+
+    const { newWarehouseObj, AddRoom, SelectRoom, RemoveRoom, AddRack, SelectRack, RemoveRack,
+        AddShelf, SelectShelf, RemoveShelf,
+        AddBox, SelectBox, RemoveBox, CreateWarehouse, loadingStatus, textError, CloseAlert
+    } = useCreateLocalWarehouseProvider();
+
+    const [updateData, setUpdateData] = useState("NONE");
+    const [description, setDescription] = useState("");
+    const [name, setName] = useState("");
+
+    const closeAlert = () => {
+        CloseAlert();
+        setUpdateData(getRandomStr());
+    }
+
+    const createWarehouse = () => {
+        CreateWarehouse(name, description);
+    }
+
+    const addRoom = (data) => {
+        AddRoom(data);
+        setUpdateData(data)
+    }
+
+    const selectRoom = (data) => {
+        SelectRoom(data);
+        setUpdateData(data)
+    }
+
+    const removeRoom = () => {
+        var r = RemoveRoom();
+        setUpdateData(r + getRandomStr());
+    }
+
+
+    const addRack = (data) => {
+        AddRack(data);
+        setUpdateData(data)
+    }
+
+    const selectRack = (data) => {
+        SelectRack(data);
+        setUpdateData(data)
+    }
+
+    const removeRack = () => {
+        var r = RemoveRack();
+        setUpdateData(r + getRandomStr());
+    }
+
+    const addShelf = (data) => {
+        AddShelf(data);
+        setUpdateData(data)
+    }
+
+    const selectShelf = (data) => {
+        SelectShelf(data);
+        setUpdateData(data)
+    }
+
+    const removeShelf = () => {
+        var r = RemoveShelf();
+        setUpdateData(r + getRandomStr());
+    }
+
+    const addBox = (data) => {
+        AddBox(data);
+        setUpdateData(data)
+    }
+
+    const selectBox = (data) => {
+        SelectBox(data);
+        setUpdateData(data)
+    }
+
+    const removeBox = () => {
+        var r = RemoveBox();
+        setUpdateData(r + getRandomStr());
+    }
+
+    const getRandomStr = () => {
+        return (Math.random() + 1).toString(36).substring(7);
+    }
+
+
+
     const drawBtnBack = () => {
         return (<>
             <br />
@@ -16,264 +108,97 @@ export default function CreateLocalWarehouse() {
         </>)
     }
 
+    const drawError = () => {
+
+        if (loadingStatus == "BAD_NAME") {
+            return (<>
+                <Alert variant="danger" onClose={() => { closeAlert() }} dismissible>
+                    <Alert.Heading>Упс, что-то пошло не так.</Alert.Heading>
+                    <p>
+                        Склад с таким именем уже существует. Назовите склад другим именем.
+                    </p>
+                </Alert>
+            </>)
+        }
+
+        if (loadingStatus == "ERROR") {
+            return (<>
+                <Alert variant="danger" onClose={() => { closeAlert() }} dismissible>
+                    <Alert.Heading>Упс, что-то пошло не так.</Alert.Heading>
+                    <p>
+                        {textError}
+                    </p>
+                </Alert>
+            </>)
+        }
+
+    }
+
+    const drawLoadState = () => {
+        if (loadingStatus != "LOADING") return
+        return <>
+            <Button variant="primary" disabled>
+                <Spinner
+                    as="span"
+                    animation="border"
+                    size="sm"
+                    role="status"
+                    aria-hidden="true"
+                />
+                <span >В процессе...</span>
+            </Button>{' '}</>
+    }
+
+    const drawCreateButton = () => {
+        if (loadingStatus == "LOADING") return
+        return <>
+            <Button align="end" variant="primary" onClick={e => { createWarehouse() }} >
+                Создать
+            </Button></>
+    }
+
+
     const drawContentLeft = () => {
         return (
             <Form>
                 <Form.Group className="mb-3" >
                     <Form.Label column="sm">Название</Form.Label>
-                    <Form.Control size="sm" type="text" placeholder="Введите название" />
+                    <Form.Control size="sm" type="text" placeholder="Введите название"
+                        onChange={(e) => { setName(e.target.value) }}
+                        value={name}
+                    />
                 </Form.Group>
                 <Row>
                     <Col >
                         <Card>
 
-                            <Card.Body>
-                                <Form.Label column="sm">Комнаты</Form.Label>
-                                <Form.Group className="mb-3" >
-                                    <Form.Label column="sm">Название</Form.Label>
-                                    <Form.Control size="sm" type="text" placeholder="Введите название" />
-                                </Form.Group>
-                                <ListGroup column="sm" size="sm">
-                                    <div className="second">
-                                        <ListGroup.Item size="sm"  column="sm" action href="#link1">
-                                            Link 1
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                    </div>
-                                </ListGroup>
-
-
-
-                                <br />
-
-                                <Row>
-                                    <Col >                <div class="d-flex justify-content-start">
-                                        <Button align="end" variant="danger" type="submit">
-                                            Удалить
-                                        </Button></div>
-                                    </Col>
-                                    <Col>                <div class="d-flex justify-content-end">
-                                        <Button align="end" variant="primary" type="submit">
-                                            Создать
-                                        </Button></div> </Col>
-                                </Row>
-                               </Card.Body>
+                            <RoomsWarehouse newWarehouseObj={newWarehouseObj} Add={addRoom} Select={selectRoom}
+                                Remove={removeRoom} />
                         </Card>
                     </Col>
                     <Col >
                         <Card>
-
-                            <Card.Body>
-                                <Form.Label column="sm">Стеллаж</Form.Label>
-                                <Form.Group className="mb-3" >
-                                    <Form.Label column="sm">Название</Form.Label>
-                                    <Form.Control size="sm" type="text" placeholder="Введите название" />
-                                </Form.Group>
-                                <ListGroup>
-                                    <div className="second">
-                                        <ListGroup.Item action href="#link1">
-                                            Link 1
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                    </div>
-                                </ListGroup>
-
-
-
-                                <br />
-
-                                <Row>
-                                    <Col >                <div class="d-flex justify-content-start">
-                                        <Button align="end" variant="danger" type="submit">
-                                            Удалить
-                                        </Button></div>
-                                    </Col>
-                                    <Col>                <div class="d-flex justify-content-end">
-                                        <Button align="end" variant="primary" type="submit">
-                                            Создать
-                                        </Button></div> </Col>
-                                </Row>
-                                </Card.Body>
-                        </Card> </Col>
+                            <RacksWarehouse newWarehouseObj={newWarehouseObj} Add={addRack} Select={selectRack}
+                                Remove={removeRack} />
+                        </Card>
+                    </Col>
                 </Row>
-
                 <br />
                 <Row>
                     <Col >
                         <Card>
-
-                            <Card.Body>
-                                <Form.Label column="sm">Полка</Form.Label>
-                                <Form.Group className="mb-3" >
-                                    <Form.Label column="sm">Название</Form.Label>
-                                    <Form.Control size="sm" type="text" placeholder="Введите название" />
-                                </Form.Group>
-                                <ListGroup column="sm">
-                                    <div className="second">
-                                        <ListGroup.Item action href="#link1">
-                                            Link 1
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                    </div>
-                                </ListGroup>
-                                <br />
-
-                                <Row>
-                                    <Col >                <div class="d-flex justify-content-start">
-                                        <Button align="end" variant="danger" type="submit">
-                                            Удалить
-                                        </Button></div>
-                                    </Col>
-                                    <Col>                <div class="d-flex justify-content-end">
-                                        <Button align="end" variant="primary" type="submit">
-                                            Создать
-                                        </Button></div> </Col>
-                                </Row>
-                                </Card.Body>
+                            <ShelvesWarehouse newWarehouseObj={newWarehouseObj} Add={addShelf} Select={selectShelf}
+                                Remove={removeShelf} />
                         </Card>
                     </Col>
                     <Col >
                         <Card>
-
-                            <Card.Body>
-                                <Form.Label column="sm">Коробка</Form.Label>
-                                <Form.Group className="mb-3" >
-                                    <Form.Label column="sm">Название</Form.Label>
-                                    <Form.Control size="sm" type="text" placeholder="Введите название" />
-                                </Form.Group>
-                                <ListGroup>
-                                    <div className="second">
-                                        <ListGroup.Item action href="#link1">
-                                            Link 1
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                        <ListGroup.Item action href="#link2">
-                                            Link 2
-                                        </ListGroup.Item>
-                                    </div>
-                                </ListGroup>
-
-
-
-                                <br />
-
-                                <Row>
-                                    <Col >                <div class="d-flex justify-content-start">
-                                        <Button align="end" variant="danger" type="submit">
-                                            Удалить
-                                        </Button></div>
-                                    </Col>
-                                    <Col>                <div class="d-flex justify-content-end">
-                                        <Button align="end" variant="primary" type="submit">
-                                            Создать
-                                        </Button></div> </Col>
-                                </Row>
-                               </Card.Body>
+                            <BoxesWarehouse newWarehouseObj={newWarehouseObj} Add={addBox} Select={selectBox}
+                                Remove={removeBox} />
                         </Card> </Col>
                 </Row>
                 <br /><br />
-            </Form > )
+            </Form >)
     }
 
     const drawContentRight = () => {
@@ -282,20 +207,20 @@ export default function CreateLocalWarehouse() {
                 <Form>
                     <Form.Group
                         className="mb-3"
-                        controlId="exampleForm.ControlTextarea1"
+
                     >
                         <Form.Label column="sm">Комментарий</Form.Label>
-                        <Form.Control size="sm" as="textarea" rows={4} max={10} />
+                        <Form.Control size="sm" as="textarea" rows={4} max={10}
+                            onChange={(e) => { setDescription(e.target.value) }}
+                            value={description} />
                     </Form.Group>
                     <div class="d-flex justify-content-end">
-                        <Button align="end" variant="primary" type="submit">
-                            Создать
-                        </Button></div>
-
+                        {drawLoadState()}
+                        {drawCreateButton()}
+                    </div >
                     <br />
-                    {/* <Alert key="info" variant="info">
-                        This is a alert—check it out!
-                    </Alert> */}
+                    {drawError()}
+
                 </Form>
             </>)
     }

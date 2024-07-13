@@ -25,6 +25,7 @@ import { LocalWarehousesProvider } from "./contexts/LocalWarehousesProvider";
 import LocalWarehousesProductsAddProductPart from "./pages/LocalWarehousesProductsAddProductPart";
 import { SelectProductModalViewProvider } from "./contexts/SelectProductModalViewProvider";
 import CreateLocalWarehouse from "./pages/CreateLocalWarehouse";
+import { CreateLocalWarehouseProvider } from "./contexts/CreateLocalWarehouseProvider";
 
 let element = document.getElementById("root");
 
@@ -45,7 +46,9 @@ function BasicProviders({ children }) {
                                     <ArchiveOrdersProvider>
                                         <LocalWarehousesProvider>
                                             <LocalWarehousesProductsProvider>
-                                                {children}
+                                                <CreateLocalWarehouseProvider>
+                                                    {children}
+                                                </CreateLocalWarehouseProvider>
                                             </LocalWarehousesProductsProvider>
                                         </LocalWarehousesProvider>
                                     </ArchiveOrdersProvider>
@@ -78,7 +81,7 @@ root.render(<>
                     <Route path="/localwarehouses" element={<LocalWarehouse />} />
                     <Route path="/localwarehousesProducts" element={<LocalWarehousesProducts />} />
                     <Route path="/localwarehousesProducts/addProduct" element={<LocalWarehousesProductsAddProductPart />} />
-                    <Route path="/localwarehouses/create" element={<CreateLocalWarehouse/>}/>
+                    <Route path="/localwarehouses/create" element={<CreateLocalWarehouse />} />
                     <Route path="/historyImportPrice" element={
                         <HistoryImportPrice />} />
                     <Route path="/*" element={<NotFound />} />
