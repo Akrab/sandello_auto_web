@@ -2,7 +2,7 @@
 import { React, useEffect } from "react";
 import { Alert, Spinner, Container, Table, Form, Col, Row, Button } from "react-bootstrap";
 import { useLocalWarehousesProvider } from "../../contexts/LocalWarehousesProvider";
-import WarehouseLine from "./WarehouseLine";
+import WarehouseLine from "./warehouseLine";
 
 
 export default function LocalWarehouse() {
@@ -80,7 +80,9 @@ export default function LocalWarehouse() {
 
 
     return <div className="localwarehouse-page">
-        <br></br>
+             <br></br>
+            {navigation()}
+            <br></br>
         <Alert key='danger' variant='danger' >
             Упс! Что-то пошло не так, перезагрузите страницу
         </Alert>

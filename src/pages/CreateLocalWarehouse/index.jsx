@@ -1,5 +1,5 @@
-import { Row, Spinner, Card, ListGroup, Col, InputGroup, Form, ToastContainer, Toast, Alert, Button, Container } from "react-bootstrap"
-import { useState, useEffect } from "react";
+import { Row, Spinner, Card, Col, Form, Alert, Button, Modal, Container } from "react-bootstrap"
+import { useState } from "react";
 
 import styles from '../../style/main.css';
 import RoomsWarehouse from "./rooms.";
@@ -13,7 +13,7 @@ export default function CreateLocalWarehouse() {
 
     const { newWarehouseObj, AddRoom, SelectRoom, RemoveRoom, AddRack, SelectRack, RemoveRack,
         AddShelf, SelectShelf, RemoveShelf,
-        AddBox, SelectBox, RemoveBox, CreateWarehouse, loadingStatus, textError, CloseAlert
+        AddBox, SelectBox, RemoveBox, CreateWarehouse, loadingStatus, textError, CloseAlert, Added, SetAdded,
     } = useCreateLocalWarehouseProvider();
 
     const [updateData, setUpdateData] = useState("NONE");
@@ -93,7 +93,6 @@ export default function CreateLocalWarehouse() {
     const getRandomStr = () => {
         return (Math.random() + 1).toString(36).substring(7);
     }
-
 
 
     const drawBtnBack = () => {
@@ -225,6 +224,28 @@ export default function CreateLocalWarehouse() {
             </>)
     }
 
+    const closeAddedModal = () => {
+        SetAdded(false);
+        window.open("/localwarehouses", "_self");
+    }
+
+    const drawModalAdded = () => {
+        return (<>
+            <Modal show={Added} onHide={closeAddedModal} animation={false}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Информация</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>Склад успешно добавлен!</Modal.Body>
+                <Modal.Footer>
+                    <Button variant="primary" onClick={closeAddedModal}>
+                        Закрыть
+                    </Button>
+                </Modal.Footer>
+            </Modal></>
+        );
+    }
+
+
     return (<>
         <div className="localwarehouses-create-page">
             <Container>
@@ -235,6 +256,8 @@ export default function CreateLocalWarehouse() {
                     <Col sm={8}>{drawContentLeft()}</Col>
                     <Col sm={4}>{drawContentRight()}  </Col>
                 </Row>
+
+                {drawModalAdded()}
             </Container>
         </div>
     </>)

@@ -26,6 +26,7 @@ import LocalWarehousesProductsAddProductPart from "./pages/LocalWarehousesProduc
 import { SelectProductModalViewProvider } from "./contexts/SelectProductModalViewProvider";
 import CreateLocalWarehouse from "./pages/CreateLocalWarehouse";
 import { CreateLocalWarehouseProvider } from "./contexts/CreateLocalWarehouseProvider";
+import { LocalWarehouseCreateNewBoxProvider } from "./contexts/LocalWarehouseCreateNewBoxProvider";
 
 let element = document.getElementById("root");
 
@@ -46,9 +47,11 @@ function BasicProviders({ children }) {
                                     <ArchiveOrdersProvider>
                                         <LocalWarehousesProvider>
                                             <LocalWarehousesProductsProvider>
-                                                <CreateLocalWarehouseProvider>
-                                                    {children}
-                                                </CreateLocalWarehouseProvider>
+                                                <LocalWarehouseCreateNewBoxProvider>
+                                                    <CreateLocalWarehouseProvider>
+                                                        {children}
+                                                    </CreateLocalWarehouseProvider>
+                                                </LocalWarehouseCreateNewBoxProvider>
                                             </LocalWarehousesProductsProvider>
                                         </LocalWarehousesProvider>
                                     </ArchiveOrdersProvider>

@@ -8,12 +8,18 @@ export default function WarehouseLine({warehouse,  children }) {
 
     }
 
+    const getRoomsCount = ()=>{
+        var count = 0;
+        for(var key in warehouse.rooms) count++;
+        return count;
+    }
+
 
     return (<tr>
         <td>{warehouse.id}</td>
         <td>{warehouse.name}</td>
-        <td>{warehouse.rooms}</td>
-        <td>{warehouse.products}</td>
+        <td>{getRoomsCount()}</td>
+        <td>{warehouse.items}</td>
         <td> <Button variant="secondary" onClick={onClickOpen}>Открыть</Button>{' '}</td>
     </tr>)
 }

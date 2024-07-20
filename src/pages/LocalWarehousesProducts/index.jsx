@@ -4,18 +4,26 @@ import { useEffect } from "react";
 import AddNewBoxView from "./AddNewBoxView";
 
 import { Link } from "react-router-dom";
+import { useLocalWarehouseCreateNewBoxProvider } from "../../contexts/LocalWarehouseCreateNewBoxProvider";
 export default function LocalWarehousesProducts() {
 
     const {
         loadingStatus,
         load,
         products,
-        setNewBoxViewShow
     } = useLocalWarehousesProductsProvider();
 
-    useEffect(() => { load() }, []);
+    const {
+        LoadWarehousesData,
+        setNewBoxViewShow
+    } = useLocalWarehouseCreateNewBoxProvider();
+
+    useEffect(() => { load();
+        setNewBoxViewShow(false);
+     }, []);
 
     const showNewBoxView = (e) => {
+        LoadWarehousesData();
         setNewBoxViewShow(true);
     }
 
@@ -29,7 +37,7 @@ export default function LocalWarehousesProducts() {
                                 SKU/Название
                             </Form.Label>
                             <Col xs="auto">
-                                <Form.Control type="text" placeholder="Введите для поиска" />
+                                <Form.Control type="text" placeholder="Введите для поиска"  />
                             </Col>
                         </Form.Group>
                     </Form>

@@ -9,6 +9,7 @@ export const CreateLocalWarehouseProvider = ({ children }) => {
     const [newWarehouseObj, setNewWarehouseObj] = useState({ rooms : {}, name : "",description : "" });
     const [loadingStatus, setLoadingStatus] = useState("NONE");
     const [textError, setTextError] = useState("");
+    const [Added, SetAdded] = useState(false);
     
     async function CreateWarehouse(name, description) {
 
@@ -35,6 +36,10 @@ export const CreateLocalWarehouseProvider = ({ children }) => {
         if (added == false){
             setTextError(res.result.error)
             setLoadingStatus("ERROR");
+        }
+
+        if (added){
+            SetAdded(true);
         }
 
         setLoadingStatus("SUCCESS");
@@ -382,7 +387,7 @@ export const CreateLocalWarehouseProvider = ({ children }) => {
     const value = {
         CreateWarehouse, loadingStatus,
         newWarehouseObj, AddRoom, AddRack, AddShelf, AddBox, SelectRoom, SelectRack, SelectShelf,
-        SelectBox, RemoveRoom, RemoveRack, RemoveRack, RemoveShelf, RemoveBox, textError, CloseAlert
+        SelectBox, RemoveRoom, RemoveRack, RemoveRack, RemoveShelf, RemoveBox, textError, CloseAlert,  Added, SetAdded,
     };
 
     return (<CreateLocalWarehouseContext.Provider value={value} >{children}</CreateLocalWarehouseContext.Provider>)

@@ -7,12 +7,11 @@ export const LocalWarehousesProductsProvider = ({ children }) => {
 
     const [loadingStatus, setLoadingStatus] = useState("LOADING");
     const [products, setProsucts] = useState([]);
-    const [newBoxViewShow, setNewBoxViewShow] = useState(false);
     const [addProductViewShow, setAddProductNewBoxViewShow] = useState(false);
 
     async function load() {
 
-        setNewBoxViewShow(false);
+
         setLoadingStatus("SUCCESS")
 
         // var warehouses = [{ id: 1, name: "weqw", rooms: 1, products: 1000 },
@@ -28,7 +27,17 @@ export const LocalWarehousesProductsProvider = ({ children }) => {
         // setLoadingStatus("SUCCESS");
     };
 
-    const value = { loadingStatus, load, products, newBoxViewShow, setNewBoxViewShow,  addProductViewShow,  setAddProductNewBoxViewShow };
+
+    async function CreateNewBox() {
+
+    }
+
+    const value = { loadingStatus, load, products,
+
+        addProductViewShow, 
+         setAddProductNewBoxViewShow };
+
+
     return (<LocalWarehousesProductsContext.Provider value={value} >{children}</LocalWarehousesProductsContext.Provider>)
 };
 

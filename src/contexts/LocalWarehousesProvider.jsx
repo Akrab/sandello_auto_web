@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import Products from "../pages/Products";
-
+import { ListLocalWarehouse } from "../api/localwarehouse";
 export const LocalWarehousesContext = React.createContext({});
 
 export const LocalWarehousesProvider = ({ children }) => {
@@ -10,20 +9,19 @@ export const LocalWarehousesProvider = ({ children }) => {
 
     async function load() {
 
-
         setLoadingStatus("SUCCESS")
 
-        var warehouses = [{ id: 1, name: "weqw", rooms: 1, products: 1000 },
-        { id: 2, name: "weqw11", rooms: 1, products: 10010 },
-        { id: 3, name: "weqw223", rooms: 1, products: 100 }];
+        const res = await ListLocalWarehouse(10, 0);
+        if (!res || res.status === "error") return setLoadingStatus("ERROR");
+
+        var warehouses = res.result.warehouses;
+        // Id          int            `json:"id"`
+        // Name        string         `json:"name"`
+        // Description string         `json:"description"`
+        // Rooms       map[int]string `json:"rooms"`
+        // Items       int            `json:"items"`
         setWarehouses(warehouses);
 
-        // setLoadingStatus("LOADING");
-        // const res = await GetSuppliers(100, 0);
-        // if (!res || res.status === "error") return setLoadingStatus("ERROR");
-
-        // setSuppliers(res.result.suppliers || res.result);
-        // setLoadingStatus("SUCCESS");
     };
 
     const value = { loadingStatus, load, warehouses };
