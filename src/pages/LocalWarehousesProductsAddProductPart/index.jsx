@@ -2,17 +2,30 @@ import { Row, Spinner, Col, InputGroup, Form, ToastContainer, Toast, Alert, Butt
 import { useState, useEffect } from "react";
 import SelectProductModalView from "../../components/SelectProductModalView"
 import { useSelectProductModalViewProvider } from "../../contexts/SelectProductModalViewProvider";
+import SelectBoxModalView from "../../components/SelectBoxModalView";
 
+import { useLocalWarehouseAddProductProvider } from "../../contexts/LocalWarehouseAddProductProvider";
 
 export default function LocalWarehousesProductsAddProductPart() {
 
     var {
-    } = useSelectProductModalViewProvider();
+        LoadWarehouses, warehouses, loadingStatus
+    } = useLocalWarehouseAddProductProvider();
 
-    const [showModal, setShowModal] = useState(false)
+    const [showFindProductModal, setShowFindProductModal] = useState(false)
+    const [showFindBoxModal, setShowFindBoxModal] = useState(false)
+
+    const [product, setProduct] = useState(null)
     const [productValue, setProductValue] = useState("")
-
-    useEffect(() => { setShowModal(false) }, []);
+    const [box, setBox] = useState(null)
+    const [boxValue, setBoxValue] = useState("")
+    const [selectWarehouse, setSelectWarehouse] = useState(null)
+    const [priceValue, setPriceValue] = useState(0)
+    const [multiplicityValue, setMultiplicityValue] = useState(1)
+    useEffect(() => {
+        setShowFindProductModal(false);
+        LoadWarehouses();
+    }, []);
 
     const drawBtnBack = () => {
         return (<>
@@ -26,12 +39,51 @@ export default function LocalWarehousesProductsAddProductPart() {
         </>)
     }
 
-    function selectItem (E){
-        setProductValue("[" +  E.sku + "] " + E.product_name);
+    function selectItem(E) {
+        setProduct(E)
+        setProductValue("[" + E.sku + "] " + E.product_name);
     }
 
     const clickSelectProduct = () => {
-        setShowModal(true);
+        setShowFindProductModal(true);
+    }
+
+    const clickSelectBox = () => {
+        setShowFindBoxModal(true);
+    }
+
+    function selectBox(E) {
+        setBox(E)
+        setBoxValue("[" + E.name + "]");
+    }
+
+    const drawWarehouse = () => {
+
+        return (<>
+            <option value='-1'>Выберите склад(выбран склад по умолчанию)</option>
+            {warehouses.map(item => {
+                return <option value={item.id}>{item.name}</option>
+            })}
+        </>)
+
+    }
+
+    const onChangeWarehouse = () => {
+        var obj = document.getElementById('selectWarehouse')
+        var value = parseInt(obj.value);
+        if (value == null)
+            setSelectWarehouse(null);
+        else
+            setSelectWarehouse(value);
+    }
+
+    const onChangePrice = (e) => {
+        setPriceValue(e.value)
+    }
+
+    const onChangeMultiplicity = (e) => {
+        
+        setMultiplicityValue(e.value)
     }
 
     const drawContentLeft = () => {
@@ -54,55 +106,68 @@ export default function LocalWarehousesProductsAddProductPart() {
                 </Form.Group>
                 <Form.Group className="mb-3" >
                     <Form.Label column="sm">Цена</Form.Label>
-                    <Form.Control size="sm" type="text" placeholder="10" />
+                    <Form.Control size="sm" type="text" placeholder="10" onChange={onChangePrice} value={priceValue} />
 
                 </Form.Group>
 
                 <Form.Group className="mb-3" >
                     <Form.Label column="sm">Кратность</Form.Label>
-                    <Form.Control size="sm" type="number" min="1" />
+                    <Form.Control size="sm" type="number" min="1" onChange={onChangeMultiplicity} value={multiplicityValue} />
                 </Form.Group>
 
                 <Form.Group className="mb-3" >
                     <Form.Label column="sm">Склад</Form.Label>
-                    <Form.Select size="sm" aria-label="Default select example">
-                        <option>Выберите склад(выбран склад по умолчанию)</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <Form.Select id="selectWarehouse" size="sm" aria-label="Default select example"
+                        onChange={e => { onChangeWarehouse() }} >
+                        {drawWarehouse()}
+
                     </Form.Select>
 
                 </Form.Group>
                 <Form.Group className="mb-3" >
-                    <Form.Label column="sm">Ячейка</Form.Label>
-                    <Form.Select size="sm" aria-label="Default select example">
-                        <option>Выберите ячейку(выбрана ячейка по умолчанию)</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                        <option value="4">One</option>
-                        <option value="5">Two</option>
-                        <option value="6">Three</option>
-                        <option value="7">One</option>
-                        <option value="8">Two</option>
-                        <option value="9">Three</option>
-                        <option value="10">One</option>
-                        <option value="11">Two</option>
-                        <option value="12">Three</option>
-                        <option value="13">One</option>
-                        <option value="14">Two</option>
-                        <option value="15">Three</option>
-                        <option value="16">One</option>
-                        <option value="17">Two</option>
-                        <option value="117">Three</option>
-                        <option value="18">One</option>
-                        <option value="21">Two</option>
-                        <option value="32">Three</option>
+                    <Form.Label column="sm">Коробка</Form.Label>
+                    <InputGroup className="mb-3">
 
-                    </Form.Select>
+                        <Form.Control
+                            placeholder=""
+                            aria-describedby="basic-addon2"
+                            readOnly
+                            value={boxValue}
+                        />
+                        <Button variant={selectWarehouse == null ? "outline-secondary" : "outline-primary"} id="button-open-select-box-modal" onClick={(e) => { clickSelectBox() }} >
+                            Выбрать
+                        </Button>
+                    </InputGroup>
                 </Form.Group>
             </Form>)
     }
+
+
+    const drawAlert = () => {
+
+        if (product == null) {
+            return (<>
+                <Alert key="info" variant="info">
+                    Веберите продукт.
+                </Alert></>)
+        }
+
+        if (selectWarehouse == null) {
+            return (<>
+                <Alert key="info" variant="info">
+                    Веберите склад.
+                </Alert></>)
+        }
+
+        if (box == null) {
+            return (<>
+                <Alert key="info" variant="info">
+                    Веберите коробку.
+                </Alert></>)
+        }
+
+    }
+
 
     const drawContentRight = () => {
         return (
@@ -116,24 +181,41 @@ export default function LocalWarehousesProductsAddProductPart() {
                         <Form.Control size="sm" as="textarea" rows={4} max={10} />
                     </Form.Group>
                     <div class="d-flex justify-content-end">
-                        <Button align="end" variant="primary" type="submit">
+                        <Button id="button-add-product" align="end" variant={box == null || product == null ? "secondary" : "primary"} >
                             Добавить
                         </Button></div>
 
                     <br />
-                    <Alert key="info" variant="info">
-                        This is a alert—check it out!
-                    </Alert>
+
+                    {drawAlert()}
+
                 </Form>
             </>)
+    }
+
+    const drawLoadingState = () => {
+
+        if (loadingStatus != "LOADING")
+            return;
+        return (<>
+            <br />
+            <Spinner animation="border" variant="primary" /> <span> Загрузка данных</span>
+        </>)
     }
 
     return (<>
         <div className="localwarehouses-add-product-page">
             <Container>
-                <SelectProductModalView showModal={showModal} setShowModal = {setShowModal} onSelect = {selectItem} />
+                <SelectProductModalView showModal={showFindProductModal} setShowModal={setShowFindProductModal} onSelect={selectItem} />
+                <SelectBoxModalView showModal={showFindBoxModal} setShowModal={setShowFindBoxModal}
+
+                    warehouses={warehouses} selectWarehouse={selectWarehouse}
+
+                    onSelect={selectBox} />
+
                 {drawBtnBack()}
                 <br />
+                {drawLoadingState()}
                 <br />
                 <Row>
                     <Col sm={8}>{drawContentLeft()}</Col>

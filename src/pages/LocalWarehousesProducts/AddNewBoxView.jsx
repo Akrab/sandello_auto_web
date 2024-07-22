@@ -1,7 +1,7 @@
 import { useState, } from "react";
-import { Modal, Spinner, Button, Form } from "react-bootstrap";
-
+import { Modal, Spinner, Alert, Button, Form } from "react-bootstrap";
 import { useLocalWarehouseCreateNewBoxProvider } from "../../contexts/LocalWarehouseCreateNewBoxProvider";
+import { useToastsOverlayProvider } from "../../contexts/ToastsOverlayProvider";
 
 export default function AddNewBoxView({ children }) {
 
@@ -10,22 +10,116 @@ export default function AddNewBoxView({ children }) {
         setNewBoxViewShow, loadingStatus, warehouses
     } = useLocalWarehouseCreateNewBoxProvider();
 
+    const{
+        AddToast
+    }= useToastsOverlayProvider();
 
+    const [enableUsedBoxName, setEnableUsedBoxName] = useState("");
     const [boxName, setBoxName] = useState("");
     const [selectWarehouse, setSelectWarehouse] = useState(null);
     const [selectRoom, setSelectRoom] = useState(null);
     const [selectRack, setSelectRack] = useState(null);
     const [selectShelf, setSelectShelf] = useState(null);
 
+
+    const clearAll = () => {
+
+        setSelectWarehouse(null)
+        setSelectRoom(null)
+        setSelectRack(null)
+        setSelectShelf(null)
+        setBoxName("")
+    }
+
     const getDisabledComponentsState = () => {
 
-        return loadingStatus != "LOADED"
+        return loadingStatus != "SUCCESS"
+    }
+
+    const createEnd = (success) => {
+        if (success) {
+            clearAll();
+            AddToast("Успех", "Коробка добавлена");
+        }
+        else {
+            AddToast("Ошибка", "Не удалось добавить коробку", "danger");
+        }
+    }
+
+    const setBoxNameAndCheck = (value) => {
+
+        setBoxName(value);
+        {
+            warehouses.map(warehouse => {
+
+                if (warehouse.id != selectWarehouse) {
+                    setEnableUsedBoxName(false);
+                    return;
+                }
+                var rooms = warehouse.rooms;
+
+                rooms.map(room => {
+
+                    if (room.id != selectRoom) {
+                        setEnableUsedBoxName(false);
+                        return;
+                    };
+
+                    var racks = room.racks
+                    racks.map(rack => {
+
+                        if (rack.id != selectRack) {
+                            setEnableUsedBoxName(false);
+                            return;
+                        };
+                        var shelves = rack.shelves
+
+                        if (shelves == null) {
+                            setEnableUsedBoxName(false);
+                            return;
+                        };
+
+                        shelves.map(shelf => {
+
+                            setEnableUsedBoxName(shelf.boxes.findIndex(D => D.name == boxName) != -1)
+
+                        })
+                    })
+                })
+            })
+        }
+
     }
 
     const onCreate = () => {
         var description = document.getElementById('description').value
         document.getElementById('description').value = ""
-        CreateBox({warehouse: selectWarehouse, room: selectRoom, rack : selectRack, shelf: selectShelf, name: boxName, description } );
+        CreateBox({ warehouse: parseInt (selectWarehouse), room: parseInt (selectRoom), rack: parseInt (selectRack), shelf: parseInt (selectShelf), name: boxName, description }, createEnd);
+    }
+
+
+    const drawHeader = () => {
+
+        if (loadingStatus == "LOAD") {
+            return (<>
+                <Modal.Title id="example-modal-sizes-title-lg">
+                    Создать коробку<span> </span>
+
+                    <Spinner
+                        as="span"
+                        animation="border"
+                        size="sm"
+                        role="status"
+                        aria-hidden="false"
+                    />
+                </Modal.Title> </>)
+        }
+
+        return (<>
+
+            <Modal.Title id="example-modal-sizes-title-lg">
+                Создать коробку<span> </span>
+            </Modal.Title> </>)
     }
 
     const drawFooter = () => {
@@ -48,32 +142,11 @@ export default function AddNewBoxView({ children }) {
 
         return (
             <>
-                <Button   onClick={e => { onCreate() }}>Добавить</Button>
+
+                <Button disabled={getDisabledComponentsState()} onClick={e => { onCreate() }}>Добавить</Button>
             </>)
     }
 
-    const drawHeader = () => {
-
-        if (loadingStatus == "LOAD") {
-            return (<>
-                <Modal.Title id="example-modal-sizes-title-lg">
-                    Создать коробку<span> </span>
-
-                    <Spinner
-                        as="span"
-                        animation="border"
-                        size="sm"
-                        role="status"
-                        aria-hidden="false"
-                    />
-                </Modal.Title> </>)
-        }
-
-        return (<>
-            <Modal.Title id="example-modal-sizes-title-lg">
-                Создать коробку<span> </span>
-            </Modal.Title> </>)
-    }
 
     const drawWarehoses = () => {
         return (<>
@@ -84,6 +157,8 @@ export default function AddNewBoxView({ children }) {
         </>)
 
     }
+
+
 
     const onChangeWarehouse = () => {
         var obj = document.getElementById('selectWarehouse')
@@ -120,7 +195,7 @@ export default function AddNewBoxView({ children }) {
         }
 
         return (<>
-            <option value='-1'>Выберите комнату(выбрана комната по умолчанию)</option>
+            <option value='-1'>Выберите помещение(выбрана комната по умолчанию)</option>
             {warehouses.map(warehouse => {
 
                 if (warehouse.id != selectWarehouse) return;
@@ -187,11 +262,18 @@ export default function AddNewBoxView({ children }) {
                         return shelves.map(shelf => {
                             return <option value={shelf.id}>{shelf.name}</option>
                         })
-
                     })
                 })
             })} </>)
 
+    }
+
+    const drawAlertUseBoxName = () => {
+        if (enableUsedBoxName == false) return
+        return (<>
+            <Alert key="warning" variant="warning"> Такое имя коробки уже используется
+            </Alert>
+        </>)
 
     }
 
@@ -211,10 +293,11 @@ export default function AddNewBoxView({ children }) {
                 <Form>
                     <Form.Group className="mb-3" >
                         <Form.Label column="sm">Название</Form.Label>
-                        <Form.Control size="sm" type="text" placeholder="Введите текст" 
-                        value={boxName} onChange={(e) => setBoxName(e.target.value)}
-                         disabled={getDisabledComponentsState()} 
-                           />
+                        <Form.Control size="sm" type="text" placeholder="Введите текст"
+                            value={boxName} onChange={(e) => setBoxNameAndCheck(e.target.value)}
+                            disabled={getDisabledComponentsState()}
+                        />
+                        {drawAlertUseBoxName()}
                     </Form.Group>
                     <Form.Group className="mb-3" >
                         <Form.Label column="sm">Склад</Form.Label>
@@ -224,7 +307,7 @@ export default function AddNewBoxView({ children }) {
                         </Form.Select>
                     </Form.Group>
                     <Form.Group className="mb-3" >
-                        <Form.Label column="sm">Комната</Form.Label>
+                        <Form.Label column="sm">Помещение</Form.Label>
                         <Form.Select id="selectRoom" size="sm" aria-label="Default select example"
                             onChange={e => { onChangeRoom() }} disabled={getDisabledComponentsState()} >
 
@@ -255,7 +338,7 @@ export default function AddNewBoxView({ children }) {
                         controlId="exampleForm.ControlTextarea1"
                     >
                         <Form.Label column="sm" disabled={getDisabledComponentsState()} >Комментарий</Form.Label>
-                        <Form.Control  id = "description"  size="sm" as="textarea" rows={1} />
+                        <Form.Control id="description" size="sm" as="textarea" rows={1} />
                     </Form.Group>
                 </Form>
             </Modal.Body>

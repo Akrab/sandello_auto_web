@@ -27,6 +27,10 @@ import { SelectProductModalViewProvider } from "./contexts/SelectProductModalVie
 import CreateLocalWarehouse from "./pages/CreateLocalWarehouse";
 import { CreateLocalWarehouseProvider } from "./contexts/CreateLocalWarehouseProvider";
 import { LocalWarehouseCreateNewBoxProvider } from "./contexts/LocalWarehouseCreateNewBoxProvider";
+import { ToastsOverlayProvider } from "./contexts/ToastsOverlayProvider";
+import ToastsOverlay from "./pages/ToastsOverlay";
+import { LocalWarehouseAddProductProvider } from "./contexts/LocalWarehouseAddProductProvider";
+
 
 let element = document.getElementById("root");
 
@@ -37,31 +41,35 @@ if (!element) {
 
 function BasicProviders({ children }) {
     return <>
-        <SelectProductModalViewProvider>
-            <HistoryImportPriceProvider>
-                <BrandImportProvider>
-                    <SuppliersProvider>
-                        <SurchargesProvider>
-                            <OrdersProvider>
-                                <ProductsProvider>
-                                    <ArchiveOrdersProvider>
-                                        <LocalWarehousesProvider>
-                                            <LocalWarehousesProductsProvider>
-                                                <LocalWarehouseCreateNewBoxProvider>
-                                                    <CreateLocalWarehouseProvider>
-                                                        {children}
-                                                    </CreateLocalWarehouseProvider>
-                                                </LocalWarehouseCreateNewBoxProvider>
-                                            </LocalWarehousesProductsProvider>
-                                        </LocalWarehousesProvider>
-                                    </ArchiveOrdersProvider>
-                                </ProductsProvider>
-                            </OrdersProvider>
-                        </SurchargesProvider>
-                    </SuppliersProvider>
-                </BrandImportProvider>
-            </HistoryImportPriceProvider>
-        </SelectProductModalViewProvider>
+        <ToastsOverlayProvider>
+            <SelectProductModalViewProvider>
+                <HistoryImportPriceProvider>
+                    <BrandImportProvider>
+                        <SuppliersProvider>
+                            <SurchargesProvider>
+                                <OrdersProvider>
+                                    <ProductsProvider>
+                                        <ArchiveOrdersProvider>
+                                            <LocalWarehousesProvider>
+                                                <LocalWarehousesProductsProvider>
+                                                    <LocalWarehouseCreateNewBoxProvider>
+                                                        <LocalWarehouseAddProductProvider>
+                                                            <CreateLocalWarehouseProvider>
+                                                                {children}
+                                                            </CreateLocalWarehouseProvider>
+                                                        </LocalWarehouseAddProductProvider>
+                                                    </LocalWarehouseCreateNewBoxProvider>
+                                                </LocalWarehousesProductsProvider>
+                                            </LocalWarehousesProvider>
+                                        </ArchiveOrdersProvider>
+                                    </ProductsProvider>
+                                </OrdersProvider>
+                            </SurchargesProvider>
+                        </SuppliersProvider>
+                    </BrandImportProvider>
+                </HistoryImportPriceProvider>
+            </SelectProductModalViewProvider>
+        </ToastsOverlayProvider>
     </>
 };
 
@@ -71,25 +79,29 @@ root.render(<>
 
     <BasicProviders>
         <BrowserRouter>
+
             <Header />
-            <Container>
-                <Routes>
-                    <Route path="/" element={<Main />} />
-                    <Route path="/orders" element={<Orders />} />
-                    <Route path="/archive" element={<ArchiveOrders />} />
-                    <Route path="/products" element={<Products />} />
-                    <Route path="/brands" element={<Brands />} />
-                    <Route path="/suppliers" element={<Suppliers />} />
-                    <Route path="/surcharges" element={<Surcharges />} />
-                    <Route path="/localwarehouses" element={<LocalWarehouse />} />
-                    <Route path="/localwarehousesProducts" element={<LocalWarehousesProducts />} />
-                    <Route path="/localwarehousesProducts/addProduct" element={<LocalWarehousesProductsAddProductPart />} />
-                    <Route path="/localwarehouses/create" element={<CreateLocalWarehouse />} />
-                    <Route path="/historyImportPrice" element={
-                        <HistoryImportPrice />} />
-                    <Route path="/*" element={<NotFound />} />
-                </Routes>
-            </Container>
+            <ToastsOverlay>
+                <Container>
+
+                    <Routes>
+                        <Route path="/" element={<Main />} />
+                        <Route path="/orders" element={<Orders />} />
+                        <Route path="/archive" element={<ArchiveOrders />} />
+                        <Route path="/products" element={<Products />} />
+                        <Route path="/brands" element={<Brands />} />
+                        <Route path="/suppliers" element={<Suppliers />} />
+                        <Route path="/surcharges" element={<Surcharges />} />
+                        <Route path="/localwarehouses" element={<LocalWarehouse />} />
+                        <Route path="/localwarehousesProducts" element={<LocalWarehousesProducts />} />
+                        <Route path="/localwarehousesProducts/addProduct" element={<LocalWarehousesProductsAddProductPart />} />
+                        <Route path="/localwarehouses/create" element={<CreateLocalWarehouse />} />
+                        <Route path="/historyImportPrice" element={
+                            <HistoryImportPrice />} />
+                        <Route path="/*" element={<NotFound />} />
+                    </Routes>
+                </Container>
+            </ToastsOverlay>
         </BrowserRouter>
 
     </BasicProviders>

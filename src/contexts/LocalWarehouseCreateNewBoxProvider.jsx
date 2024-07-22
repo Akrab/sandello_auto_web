@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { LoadLocalWarehousesStruct } from "../api/localwarehouse";
+import { LoadLocalWarehousesStruct, CreateNewBox } from "../api/localwarehouse";
 export const LocalWarehouseCreateNewBoxContext = React.createContext({});
 
 export const LocalWarehouseCreateNewBoxProvider = ({ children }) => {
@@ -21,9 +21,24 @@ export const LocalWarehouseCreateNewBoxProvider = ({ children }) => {
     }
 
 
-    async function CreateBox() {
+    async function CreateBox(obj, action) {
+        setLoadingStatus("CREATE_PROCESS");
 
-        setLoadingStatus("SUCCESS")
+        const res = await CreateNewBox(obj);
+
+        if (!res || res.status === "error")   {
+         
+            action(false);
+            setLoadingStatus("SUCCESS");
+           // setLoadingStatus("ERROR");
+            return
+        }
+
+        await LoadWarehousesData();
+ 
+        setLoadingStatus("SUCCESS");
+
+        action(true);
     };
 
     async function LoadWarehousesData() {
@@ -35,7 +50,7 @@ export const LocalWarehouseCreateNewBoxProvider = ({ children }) => {
 
         setWarehouses(res.result.warehouses);
         parseWarehouseNames()
-        setLoadingStatus("LOADED")
+        setLoadingStatus("SUCCESS")
     }
 
 

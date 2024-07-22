@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { GetProducts } from "../api/productsFind";
 
-export const SelectProductModalViewContext = React.createContext({});
+export const SelectBoxModalViewContext = React.createContext({});
 
-export const SelectProductModalViewProvider = ({ children }) => {
+export const SelectBoxModalViewProvider = ({ children }) => {
     const ITEMS_IN_PAGE = 10;
 
     const [loadingState, setLoadingState] = useState("NONE");
@@ -23,6 +23,18 @@ export const SelectProductModalViewProvider = ({ children }) => {
             return;
         }
 
+
+        // setItems([{
+        //     id: 0, sku: "CLEANFILTERS-MA435", vendor_code: "MA435", brandName: { id: 0, name: "CLEAN FILTERS" }, product_name: "Фильтр воздушный AUDI: 100 77-82, 100 82-90, 200 79-82, 200 83-91, LADA: 110 95-, 111 95-, 112 95-, KALINA хечбэк 04-, KALINA седан 04-, NIVA II 02-, SEAT: TERR"
+        // }, {
+        //     id: 1, sku: "CLEANFILTERS-MA435", vendor_code: "MA435", brandName: { id: 0, name: "CLEAN FILTERS" }, product_name: "Фильтр воздушный AUDI: 100 77-82, 100 82-90, 200 79-82, 200 83-91, LADA: 110 95-, 111 95-, 112 95-, KALINA хечбэк 04-, KALINA седан 04-, NIVA II 02-, SEAT: TERR"
+        // }, { id: 2, sku: "CLEANFILTERS-MA435", vendor_code: "MA435", brandName: { id: 0, name: "CLEAN FILTERS" }, product_name: "Фильтр воздушный AUDI: 100 77-82, 100 82-90, 200 79-82, 200 83-91, LADA: 110 95-, 111 95-, 112 95-, KALINA хечбэк 04-, KALINA седан 04-, NIVA II 02-, SEAT: TERR" }]);
+
+        // setItemsCount(parseInt(3))
+        // calculateMaxPages();
+        // setLoadingState("SUCCESS");
+        // return;
+        //fuck
         data = data.replaceAll("\r", " ");
         data = data.replaceAll("\n", " ");
         data = data.replaceAll("  ", " ");
@@ -74,9 +86,9 @@ export const SelectProductModalViewProvider = ({ children }) => {
         items, currentPage, loadingState, maxPage, LoadPage, Find, ClearData
     };
 
-    return (<SelectProductModalViewContext.Provider value={value} >{children}</SelectProductModalViewContext.Provider>)
+    return (<SelectBoxModalViewContext.Provider value={value} >{children}</SelectBoxModalViewContext.Provider>)
 };
 
 
 
-export const useSelectProductModalViewProvider = () => React.useContext(SelectProductModalViewContext);
+export const useSelectBoxModalViewProvider = () => React.useContext(SelectBoxModalViewContext);
