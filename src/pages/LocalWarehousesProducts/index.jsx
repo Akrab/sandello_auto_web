@@ -18,9 +18,10 @@ export default function LocalWarehousesProducts() {
         setNewBoxViewShow
     } = useLocalWarehouseCreateNewBoxProvider();
 
-    useEffect(() => { load();
+    useEffect(() => {
+        load();
         setNewBoxViewShow(false);
-     }, []);
+    }, []);
 
     const showNewBoxView = (e) => {
         LoadWarehousesData();
@@ -37,7 +38,7 @@ export default function LocalWarehousesProducts() {
                                 SKU/Название
                             </Form.Label>
                             <Col xs="auto">
-                                <Form.Control type="text" placeholder="Введите для поиска"  />
+                                <Form.Control type="text" placeholder="Введите для поиска" />
                             </Col>
                         </Form.Group>
                     </Form>
@@ -64,13 +65,57 @@ export default function LocalWarehousesProducts() {
         </>)
     }
 
+    const drawWarehouseSellers = (warehouses) => {
+        return (<>
+            {warehouses.map(item => {
+                if (item.count <= 0)
+                    return <>    <span class="text-black-50"> {item.name + " " + " x" + item.count}</span> <br /> </>
+                return <>   <span class="text-success">{item.name + " " + " x" + item.count}</span><br /> </>
+            })}
+        </>)
+    }
 
-    const drawWarehouses = () => {
-        // return (<>
-        //     {warehouses.map(warehouse => {
-        //         return <WarehouseLine warehouse={warehouse} key={warehouse.id} />
-        //     })}
-        // </>)
+
+    const drawProducts = () => {
+
+
+        var products = [
+            {
+                id: 1, sku: "YATO-3124432", name: "Трещетка", count: 10, warehouses: [
+                    { name: "Главный", count: 9 }, { name: "Удаленный", count: 1 }
+                ]
+            },
+            {
+                id: 1, sku: "ВАЗ-312", name: "ШРУС", count: 1, warehouses: [
+                    { name: "Удаленный", count: 1 }
+                ]
+            },
+            {
+                id: 1, sku: "YATO-3124432", name: "Трещетка", count: 10, warehouses: [
+                    { name: "Главный", count: 9 }, { name: "Удаленный", count: 1 }
+                ]
+            }
+        ];
+
+        return (<>
+            {products.map(product => {
+                return (<>
+                    <tr>
+                        <td align="left"> {product.id}</td>
+                        <td align="center">{product.sku}</td>
+                        <td style={{ "word-break": "break-all", "width": "15%" }} align="center">{product.name}</td>
+                        <td align="center">{product.count}</td>
+                        <td align="center">123</td>
+                        <td align="center">Удаленный</td>
+                        <td align="center">А:1:Большая коробка</td>
+                        <td style={{ "width": "1%" }} align="left">
+                            <Button id="button-add-product" align="end" variant="primary">
+                                Редактировать
+                            </Button></td>
+                    </tr>
+                </>)
+            })}
+        </>)
     }
 
 
@@ -107,11 +152,14 @@ export default function LocalWarehousesProducts() {
                         <th align="center"> <p style={{ "text-align": "center" }}>SKU </p></th>
                         <th align="center"> <p style={{ "text-align": "center" }}>Наименование</p></th>
                         <th align="center"> <p style={{ "text-align": "center" }}>Кол-во</p></th>
-                        <th align="left"> <p style={{ "text-align": "left" }}>Склады</p></th>
+                        <th align="center"> <p style={{ "text-align": "center" }}>Цена</p></th>
+                        <th align="left"> <p style={{ "text-align": "center" }}>Склад</p></th>
+                        <th align="left"> <p style={{ "text-align": "center" }}>Коробка</p></th>
+                        <th> </th>
                     </tr>
                 </thead>
                 <tbody>
-                    {drawWarehouses()}
+                    {drawProducts()}
                 </tbody>
             </Table>
 

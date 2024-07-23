@@ -38,7 +38,7 @@ export default function SelectProductModalView({ showModal, setShowModal, onSele
 
     }
 
-    const SelectPage =(page)=>{
+    const SelectPage = (page) => {
 
         LoadPage(inputValue, page)
     }
@@ -137,21 +137,20 @@ export default function SelectProductModalView({ showModal, setShowModal, onSele
                     </Form.Group>
 
                     <Form.Group className="mb-3" >
-                            <Table size="sm" >
-                                <thead>
-                                    <tr size="sm">
-                                        <th>Id</th>
-                                        <th>SKU</th>
-                                        <th>Артикул</th>
-                                        <th>Бренд</th>
-                                        <th>Название</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {createTableBody()}
-                                </tbody>
-                            </Table>
-                
+                        <Table size="sm" >
+                            <thead>
+                                <tr size="sm">
+                                    <th>Id</th>
+                                    <th>SKU</th>
+                                    <th>Артикул</th>
+                                    <th>Бренд</th>
+                                    <th>Название</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {createTableBody()}
+                            </tbody>
+                        </Table>
                     </Form.Group>
                 </Form>
                 <BasePaginator page={currentPage} setPage={SelectPage} maxPages={maxPage > 20 ? 20 : maxPage} />

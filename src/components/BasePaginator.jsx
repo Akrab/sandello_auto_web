@@ -13,7 +13,7 @@ export default function BasePaginator({ page, setPage, maxPages }) {
 
     for (let number = 0; number < _maxPages; number++) {
         items.push(
-            <Pagination.Item key={number + 1} onClick={() => handlePageChange(number)} active={number === page}>
+            <Pagination.Item key={number + 1} onClick={() => handlePageChange(number)} active={number == page}>
                 {number + 1}
             </Pagination.Item>,
         );

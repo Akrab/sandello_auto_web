@@ -10,11 +10,10 @@ export const SelectProductModalViewProvider = ({ children }) => {
     const [maxPage, setMaxPage] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const [itemsCount, setItemsCount] = useState(0);
-    const [limit, setLimit] = useState(10);
+    const [limit, setLimit] = useState(ITEMS_IN_PAGE);
     const [offset, setOffset] = useState(0);
     const [items, setItems] = useState([]);
     
-
     async function Find(data) {
 
         if (data.length < 3) {
@@ -51,7 +50,7 @@ export const SelectProductModalViewProvider = ({ children }) => {
         setItems([])
         setItemsCount(0)
         calculateMaxPages();
-        setLimit(10)
+        setLimit(ITEMS_IN_PAGE)
         setOffset(0)
         setCurrentPage(0)
     }

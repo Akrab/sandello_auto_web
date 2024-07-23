@@ -15,3 +15,7 @@ export async function LoadLocalWarehousesStruct(limit, offset) {
 export async function CreateNewBox(body) {
     return await sendPost({ url: '/api/v1/localwarehouses/createNewBox', body: body });
 };
+
+export async function AddNewProduct(body) {
+    return await sendPost({ url: '/api/v1/localwarehouses/addNewProduct', body: body });
+};

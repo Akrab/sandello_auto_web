@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 
-import { LoadLocalWarehousesStruct } from "../api/localwarehouse";
+import { LoadLocalWarehousesStruct, AddNewProduct } from "../api/localwarehouse";
+
+import { useToastsOverlayProvider } from "./ToastsOverlayProvider";
 
 export const LocalWarehouseAddProductContext = React.createContext({});
 
@@ -10,6 +12,9 @@ export const LocalWarehouseAddProductProvider = ({ children }) => {
     const [warehouses, setWarehouses] = useState([]);
 
     const [warehouseNames, setWarehouseNames] = useState([])
+
+    const { AddToast } = useToastsOverlayProvider();
+
     async function LoadWarehouses() {
 
         setLoadingStatus("LOADING")
@@ -26,14 +31,29 @@ export const LocalWarehouseAddProductProvider = ({ children }) => {
     function parseWarehouseNames() {
         var names = [];
 
-        for (var i = 0; i <  warehouses.length; i++){
-            names.push( {id : warehouses[i].id, name :warehouses[i].name });
+        for (var i = 0; i < warehouses.length; i++) {
+            names.push({ id: warehouses[i].id, name: warehouses[i].name });
         }
         setWarehouseNames(names);
 
     }
 
-    const value = { loadingStatus, LoadWarehouses, warehouses, warehouseNames };
+    async function AddProduct(obj, action) {
+        setLoadingStatus("CREATED")
+
+        const res = await AddNewProduct(obj);
+
+        if (!res || res.status === "error") {
+            AddToast("Добавление продукта", "Ошибка. " + res.error, "Warning");
+            action(false);
+        }
+        AddToast("Добавление продукта", "Продукт успешно добавлен.");
+        action(true);
+
+        setLoadingStatus("SUCCESS")
+    }
+
+    const value = { loadingStatus, LoadWarehouses, warehouses, warehouseNames, AddProduct };
 
 
     return (<LocalWarehouseAddProductContext.Provider value={value} >{children}</LocalWarehouseAddProductContext.Provider>)

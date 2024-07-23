@@ -1,7 +1,6 @@
 import { Row, Spinner, Col, InputGroup, Form, ToastContainer, Toast, Alert, Button, Container } from "react-bootstrap"
 import { useState, useEffect } from "react";
 import SelectProductModalView from "../../components/SelectProductModalView"
-import { useSelectProductModalViewProvider } from "../../contexts/SelectProductModalViewProvider";
 import SelectBoxModalView from "../../components/SelectBoxModalView";
 
 import { useLocalWarehouseAddProductProvider } from "../../contexts/LocalWarehouseAddProductProvider";
@@ -9,7 +8,7 @@ import { useLocalWarehouseAddProductProvider } from "../../contexts/LocalWarehou
 export default function LocalWarehousesProductsAddProductPart() {
 
     var {
-        LoadWarehouses, warehouses, loadingStatus
+        LoadWarehouses, warehouses, loadingStatus, AddProduct
     } = useLocalWarehouseAddProductProvider();
 
     const [showFindProductModal, setShowFindProductModal] = useState(false)
@@ -21,7 +20,10 @@ export default function LocalWarehousesProductsAddProductPart() {
     const [boxValue, setBoxValue] = useState("")
     const [selectWarehouse, setSelectWarehouse] = useState(null)
     const [priceValue, setPriceValue] = useState(0)
+    const [countProduct, setCountProduct] = useState(1)
     const [multiplicityValue, setMultiplicityValue] = useState(1)
+    const [description, setDescription] = useState("")
+
     useEffect(() => {
         setShowFindProductModal(false);
         LoadWarehouses();
@@ -49,18 +51,47 @@ export default function LocalWarehousesProductsAddProductPart() {
     }
 
     const clickSelectBox = () => {
+
+        if (selectWarehouse == null) return;
         setShowFindBoxModal(true);
     }
 
-    function selectBox(E) {
+    const onAddProduct = () => {
+        AddProduct({
+            boxId: box.id,
+            productId: product.id,
+            price: parseFloat(priceValue),
+            multiple: parseInt(multiplicityValue),
+            count: parseInt(countProduct),
+            description
+        },
+            productAddCompleted)
+    }
+
+    const productAddCompleted = (isGood) => {
+
+        if (isGood) {
+            setProduct(null);
+            setBoxValue("");
+            setBox(null);
+            setProductValue("")
+            setPriceValue(0)
+            setCountProduct(1)
+            setMultiplicityValue(1)
+            setDescription("");
+        }
+    }
+
+    const selectBox = (E, roomName, rackName, shelfName) => {
         setBox(E)
-        setBoxValue("[" + E.name + "]");
+
+        setBoxValue("[" + roomName + ":" + rackName + ":" + shelfName + ":" + E.name + "]");
     }
 
     const drawWarehouse = () => {
 
         return (<>
-            <option value='-1'>Выберите склад(выбран склад по умолчанию)</option>
+            <option value='-1'>Выберите склад</option>
             {warehouses.map(item => {
                 return <option value={item.id}>{item.name}</option>
             })}
@@ -71,19 +102,19 @@ export default function LocalWarehousesProductsAddProductPart() {
     const onChangeWarehouse = () => {
         var obj = document.getElementById('selectWarehouse')
         var value = parseInt(obj.value);
-        if (value == null)
+        if (value == -1)
             setSelectWarehouse(null);
         else
             setSelectWarehouse(value);
     }
 
+
     const onChangePrice = (e) => {
-        setPriceValue(e.value)
+        setPriceValue(e.target.value)
     }
 
     const onChangeMultiplicity = (e) => {
-        
-        setMultiplicityValue(e.value)
+        setMultiplicityValue(e.target.value)
     }
 
     const drawContentLeft = () => {
@@ -106,13 +137,17 @@ export default function LocalWarehousesProductsAddProductPart() {
                 </Form.Group>
                 <Form.Group className="mb-3" >
                     <Form.Label column="sm">Цена</Form.Label>
-                    <Form.Control size="sm" type="text" placeholder="10" onChange={onChangePrice} value={priceValue} />
-
+                    <Form.Control size="sm" type="number" min="0.00" max="1000000.00" step="0.01" placeholder="10" onChange={onChangePrice} value={priceValue} />
                 </Form.Group>
 
                 <Form.Group className="mb-3" >
                     <Form.Label column="sm">Кратность</Form.Label>
                     <Form.Control size="sm" type="number" min="1" onChange={onChangeMultiplicity} value={multiplicityValue} />
+                </Form.Group>
+
+                <Form.Group className="mb-3" >
+                    <Form.Label column="sm">Количество</Form.Label>
+                    <Form.Control size="sm" type="number" min="1" max="1000000" step="1" placeholder="1" onChange={e => { setCountProduct(e.target.value) }} value={countProduct} />
                 </Form.Group>
 
                 <Form.Group className="mb-3" >
@@ -166,6 +201,36 @@ export default function LocalWarehousesProductsAddProductPart() {
                 </Alert></>)
         }
 
+        if (priceValue == 0) {
+            return (<>
+                <Alert key="info" variant="info">
+                    Ценник равен 0! Вы уверены?
+                </Alert></>)
+        }
+
+    }
+
+    const drawButtonAdd = () => {
+
+        if (loadingStatus == "CREATED") {
+            return (<>
+                <Button variant="primary" disabled>
+                    <Spinner
+                        as="span"
+                        animation="grow"
+                        size="sm"
+                        role="status"
+                        aria-hidden="true"
+                    />
+                    <span> Загрузка...</span>
+                </Button></>)
+        }
+
+        return (<>
+            <Button id="button-add-product" align="end" variant={box == null || product == null ? "secondary" : "primary"} onClick={(e) => { onAddProduct() }}>
+                Добавить
+            </Button>
+        </>)
     }
 
 
@@ -178,13 +243,13 @@ export default function LocalWarehousesProductsAddProductPart() {
                         controlId="exampleForm.ControlTextarea1"
                     >
                         <Form.Label column="sm">Комментарий</Form.Label>
-                        <Form.Control size="sm" as="textarea" rows={4} max={10} />
+                        <Form.Control size="sm" as="textarea" rows={4} max={10} value={description} onInput={e => { setDescription(e.target.value) }} />
                     </Form.Group>
                     <div class="d-flex justify-content-end">
-                        <Button id="button-add-product" align="end" variant={box == null || product == null ? "secondary" : "primary"} >
-                            Добавить
-                        </Button></div>
 
+                        {drawButtonAdd()}
+
+                    </div >
                     <br />
 
                     {drawAlert()}

@@ -17,11 +17,14 @@ export const LocalWarehouseCreateNewBoxProvider = ({ children }) => {
             names.push(warehouses[i].name);
         }
         setWarehouseNames(names);
-
     }
 
-
     async function CreateBox(obj, action) {
+
+        obj.name = obj.name.replaceAll("\r", " ");
+        obj.name = obj.name.replaceAll("\n", " ");
+        obj.name = obj.name.replaceAll("  ", " ");
+        obj.name = obj.name.replaceAll("   ", " ");
         setLoadingStatus("CREATE_PROCESS");
 
         const res = await CreateNewBox(obj);
@@ -30,7 +33,6 @@ export const LocalWarehouseCreateNewBoxProvider = ({ children }) => {
          
             action(false);
             setLoadingStatus("SUCCESS");
-           // setLoadingStatus("ERROR");
             return
         }
 
