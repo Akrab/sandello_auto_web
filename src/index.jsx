@@ -22,7 +22,6 @@ import ArchiveOrders from "./pages/ArchiveOrders";
 import { LocalWarehousesProductsProvider } from "./contexts/LocalWarehousesProductsProvider";
 import LocalWarehousesProducts from "./pages/LocalWarehousesProducts";
 import { LocalWarehousesProvider } from "./contexts/LocalWarehousesProvider";
-import LocalWarehousesProductsAddProductPart from "./pages/LocalWarehousesProductsAddProductPart";
 import { SelectProductModalViewProvider } from "./contexts/SelectProductModalViewProvider";
 import CreateLocalWarehouse from "./pages/CreateLocalWarehouse";
 import { CreateLocalWarehouseProvider } from "./contexts/CreateLocalWarehouseProvider";
@@ -30,7 +29,7 @@ import { LocalWarehouseCreateNewBoxProvider } from "./contexts/LocalWarehouseCre
 import { ToastsOverlayProvider } from "./contexts/ToastsOverlayProvider";
 import ToastsOverlay from "./pages/ToastsOverlay";
 import { LocalWarehouseAddProductProvider } from "./contexts/LocalWarehouseAddProductProvider";
-
+import LocalWarehouseAddProduct from "./pages/LocalWarehousesAddProduct";
 
 let element = document.getElementById("root");
 
@@ -94,7 +93,7 @@ root.render(<>
                         <Route path="/surcharges" element={<Surcharges />} />
                         <Route path="/localwarehouses" element={<LocalWarehouse />} />
                         <Route path="/localwarehousesProducts" element={<LocalWarehousesProducts />} />
-                        <Route path="/localwarehousesProducts/addProduct" element={<LocalWarehousesProductsAddProductPart />} />
+                        <Route path="/localwarehousesProducts/addProduct" element={<LocalWarehouseAddProduct />} />
                         <Route path="/localwarehouses/create" element={<CreateLocalWarehouse />} />
                         <Route path="/historyImportPrice" element={
                             <HistoryImportPrice />} />

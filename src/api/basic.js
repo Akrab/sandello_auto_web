@@ -3,7 +3,7 @@ import axios from "axios";
 
 async function sendAxiosGetRequset(params) {
     try {
-        let header = params.header || {};
+        let header = params.header ?? {};
 
         const response = await axios.get(params.url, { params: header })
 

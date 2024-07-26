@@ -5,7 +5,7 @@ import SelectBoxModalView from "../../components/SelectBoxModalView";
 
 import { useLocalWarehouseAddProductProvider } from "../../contexts/LocalWarehouseAddProductProvider";
 
-export default function LocalWarehousesProductsAddProductPart() {
+export default function LocalWarehouseAddProduct() {
 
     var {
         LoadWarehouses, warehouses, loadingStatus, AddProduct

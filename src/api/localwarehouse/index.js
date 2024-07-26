@@ -1,4 +1,4 @@
-import { sendGet, sendPost } from "../basic";
+import { sendGet, sendPost, sendPut } from "../basic";
 
 export async function CreateNewLocalWarehouse(data) {
     return await sendPost({ url: '/api/v1/localwarehouses/create', body: { data : data } });
@@ -19,3 +19,18 @@ export async function CreateNewBox(body) {
 export async function AddNewProduct(body) {
     return await sendPost({ url: '/api/v1/localwarehouses/addNewProduct', body: body });
 };
+
+export async function ListProducts(body) {
+    return await sendPost({ url: '/api/v1/localwarehouses/products', body: body });
+};
+
+export async function ProductBoxInfo(boxProductId) {
+    return await sendGet({ url: '/api/v1/localwarehouses/productBoxInfo', header: { boxProductId}  });
+};
+
+export async function UpdateBoxProductData(body) {
+    return await sendPut({ url: '/api/v1/localwarehouses/updateProduct', body : body  });
+};
+
+
+
