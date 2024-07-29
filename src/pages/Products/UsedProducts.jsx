@@ -14,8 +14,8 @@ export default function UsedProducts() {
     useEffect(() => {console.log("UsedProducts") }, []);
 
     return <div className="used-products-page">
-        <Alert key='danger' variant='danger' >
-            Упс! Что-то пошло не так, перезагрузите страницу
+        <Alert key='todo' variant='info' >
+            Упс! Скоро будет:)
         </Alert>
         <ProductsPaginator page={page} setPage={setPage} maxPages={maxPages} />
     </div>

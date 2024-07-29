@@ -14,7 +14,7 @@ export const SelectProductModalViewProvider = ({ children }) => {
     const [offset, setOffset] = useState(0);
     const [items, setItems] = useState([]);
     
-    async function Find(data) {
+    async function Find(data, _offset) {
 
         if (data.length < 3) {
             ClearData();
@@ -22,13 +22,16 @@ export const SelectProductModalViewProvider = ({ children }) => {
             return;
         }
 
+        if (_offset == null) 
+            _offset = offset;
+
         data = data.replaceAll("\r", " ");
         data = data.replaceAll("\n", " ");
         data = data.replaceAll("  ", " ");
         data = data.replaceAll("   ", " ");
 
         setLoadingState("LOADING");
-        const res = await GetProducts(data, limit, offset);
+        const res = await GetProducts(data, limit, _offset);
         if (!res || res.status === "error") {
             ClearData();
             setLoadingState("ERROR");
@@ -58,7 +61,7 @@ export const SelectProductModalViewProvider = ({ children }) => {
 
     async function LoadPage (data, page) {
         setOffset(page * ITEMS_IN_PAGE);
-        await Find(data);
+        await Find(data, page * ITEMS_IN_PAGE);
         setCurrentPage(page);
     }
 

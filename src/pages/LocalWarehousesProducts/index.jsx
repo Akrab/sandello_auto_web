@@ -3,6 +3,7 @@ import { useLocalWarehousesProductsProvider } from "../../contexts/LocalWarehous
 import { useEffect, useState } from "react";
 import AddNewBoxView from "./AddNewBoxView";
 import EditProduct from "./EditProduct";
+import AdvancePaginator from "../../components/AdvancePaginator";
 
 import { useLocalWarehouseCreateNewBoxProvider } from "../../contexts/LocalWarehouseCreateNewBoxProvider";
 
@@ -12,7 +13,7 @@ export default function LocalWarehousesProducts() {
         loadingStatus,
         Load,
         products,
-        serverError, setShowEditModal, setEditSlot, LoadInfo
+        serverError, setShowEditModal, setEditSlot, LoadInfo, maxPage, currentPage, LoadPage
     } = useLocalWarehousesProductsProvider();
 
     const {
@@ -28,6 +29,17 @@ export default function LocalWarehousesProducts() {
     }, []);
 
     const [update, setUpdate] = useState("");
+
+    const onSetPage = (e)=>{
+        setUpdate(e);
+        LoadPage(e);
+        setUpdate(getRandomStr());
+
+    } 
+
+    const getRandomStr = () => {
+        return (Math.random() + 1).toString(36).substring(7);
+    }
 
     const showNewBoxView = (e) => {
         LoadWarehousesData();
@@ -68,16 +80,6 @@ export default function LocalWarehousesProducts() {
                     </Row>
                 </Form></Col>
             </Row>
-        </>)
-    }
-
-    const drawWarehouseSellers = (warehouses) => {
-        return (<>
-            {warehouses.map(item => {
-                if (item.count <= 0)
-                    return <>    <span class="text-black-50"> {item.name + " " + " x" + item.count}</span> <br /> </>
-                return <>   <span class="text-success">{item.name + " " + " x" + item.count}</span><br /> </>
-            })}
         </>)
     }
 
@@ -205,6 +207,8 @@ export default function LocalWarehousesProducts() {
             </Table>
 
             <EditProduct onUpdate = {setUpdate} />
+            <AdvancePaginator  page = {currentPage} setPage = {onSetPage} maxPages = {maxPage} />
+            
         </Container>
         <AddNewBoxView />
 
@@ -225,5 +229,6 @@ export default function LocalWarehousesProducts() {
         <Alert key='danger' variant='danger' >
             Упс! Что-то пошло не так, перезагрузите страницу
         </Alert>
+
     </div>
 }

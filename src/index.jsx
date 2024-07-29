@@ -30,6 +30,7 @@ import { ToastsOverlayProvider } from "./contexts/ToastsOverlayProvider";
 import ToastsOverlay from "./pages/ToastsOverlay";
 import { LocalWarehouseAddProductProvider } from "./contexts/LocalWarehouseAddProductProvider";
 import LocalWarehouseAddProduct from "./pages/LocalWarehousesAddProduct";
+import AddProduct from "./pages/AddProduct";
 
 let element = document.getElementById("root");
 
@@ -88,6 +89,7 @@ root.render(<>
                         <Route path="/orders" element={<Orders />} />
                         <Route path="/archive" element={<ArchiveOrders />} />
                         <Route path="/products" element={<Products />} />
+                        <Route path="products/add" element= {<AddProduct/>}/>
                         <Route path="/brands" element={<Brands />} />
                         <Route path="/suppliers" element={<Suppliers />} />
                         <Route path="/surcharges" element={<Surcharges />} />

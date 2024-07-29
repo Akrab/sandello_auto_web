@@ -25,8 +25,43 @@ export const LocalWarehousesProductsProvider = ({ children }) => {
 
     const [lastSearch, setLastSearch] = useState({
         page: -1,
-        search: ""
+        filter: {
+            search: ""
+        }
     })
+
+    async function LoadPage(newPage) {
+
+        setLoadingStatus("LOADING")
+
+        if (lastSearch.filter.search == null) lastSearch.filter.search = "";
+
+        if (lastSearch.filter.search.length < 3) lastSearch.filter.search = "";
+
+        var obj = {
+            limit: COUTN_ITEMS_IN_PAGE,
+            offset: COUTN_ITEMS_IN_PAGE * newPage,
+            filter: {
+                search: lastSearch.filter.search
+            }
+        }
+
+        var res = await ListProducts(obj)
+        if (!res || res.status === "error") {
+            setServerError(res.error)
+            setLoadingStatus("ERROR");
+            return 
+        }
+        setLastSearch(obj)
+        setProducts(res.result.products);
+        setTotalCount(res.result.count);
+        setMaxPage(Math.max(1, Math.ceil(res.result.count / COUTN_ITEMS_IN_PAGE)));
+
+        setLoadingStatus("SUCCESS");
+        setServerError(null);
+
+        setCurentPage(newPage);
+    }
 
     async function Load(search) {
         setLoadingStatus("SUCCESS");
@@ -43,6 +78,8 @@ export const LocalWarehousesProductsProvider = ({ children }) => {
                 search: search
             }
         }
+
+        setLastSearch(obj)
 
         var res = await ListProducts(obj)
         if (!res || res.status === "error") {
@@ -124,7 +161,7 @@ export const LocalWarehousesProductsProvider = ({ children }) => {
         serverError,
         addProductViewShow,
         setAddProductNewBoxViewShow,
-        showEditModal, setShowEditModal, editSlot, setEditSlot, loadingSlotInfoStatus, LoadInfo, UpdateBoxProduct
+        showEditModal, setShowEditModal, editSlot, setEditSlot, loadingSlotInfoStatus, LoadInfo, UpdateBoxProduct, maxPage, currentPage, LoadPage
     };
 
 

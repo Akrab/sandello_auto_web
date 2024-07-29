@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Alert, Spinner, Modal, OverlayTrigger, Tooltip, Table, Form, Button } from "react-bootstrap";
 
 import { useSelectProductModalViewProvider } from "../../contexts/SelectProductModalViewProvider";
-import BasePaginator from "../BasePaginator";
+import AdvancePaginator from "../AdvancePaginator";
 
 export default function SelectProductModalView({ showModal, setShowModal, onSelect }) {
 
@@ -39,10 +39,8 @@ export default function SelectProductModalView({ showModal, setShowModal, onSele
     }
 
     const SelectPage = (page) => {
-
         LoadPage(inputValue, page)
     }
-
 
     const createTableBody = () => {
 
@@ -153,7 +151,7 @@ export default function SelectProductModalView({ showModal, setShowModal, onSele
                         </Table>
                     </Form.Group>
                 </Form>
-                <BasePaginator page={currentPage} setPage={SelectPage} maxPages={maxPage > 20 ? 20 : maxPage} />
+                <AdvancePaginator page={currentPage} setPage={SelectPage} maxPages={maxPage} />
             </Modal.Body>
             {drawErrorInfo()}
             <Modal.Footer>

@@ -21,7 +21,6 @@ export default function EditProduct({onUpdate}) {
 
     const onClickApply = () => {
 
-       var modValue =  editSlot.boxProduct.id + newCount + newPrice
         UpdateBoxProduct({id : editSlot.boxProduct.id, count : newCount, price : newPrice + "" }, ()=>{ onClickClose(); onUpdate(getRandomStr());} );
     }
 

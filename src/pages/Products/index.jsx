@@ -10,7 +10,7 @@ export default function Products() {
 
 
     const {} = useProductsProvider();
-    const [tab, setTab] = useState("used");
+    const [tab, setTab] = useState("all");
 
     const onSelectTab = (e) => {
         setTab(e.target.id)
@@ -24,12 +24,12 @@ export default function Products() {
     const TabsExample = () => {
         return (<>
             <br></br>
-            <Nav variant="tabs" defaultActiveKey="used">
+            <Nav variant="tabs" defaultActiveKey="all">
                 <Nav.Item>
                     <Nav.Link eventKey="used" id="used" onClick={onSelectTab} >В Магазине</Nav.Link>
                 </Nav.Item>
                 <Nav.Item>
-                    <Nav.Link eventKey="all" id="all" onClick={onSelectTab}>Все товары поставщиков</Nav.Link>
+                    <Nav.Link eventKey="all" id="all" onClick={onSelectTab}>Все товары</Nav.Link>
                 </Nav.Item>
             </Nav></>
         );
